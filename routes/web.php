@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\DesaController;
 use \App\Http\Controllers\PerangkatDesaController;
-use \App\Http\Controllers\AttendanceController;
-use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('guest.welcome');
@@ -24,7 +23,7 @@ Route::view('dashboard', 'admin/perangkat/perangkat')
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/absensi', [AttendanceController::class, 'index'])->name('absensi.index');
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
 });
 
 Route::middleware(['auth'])->group(function () {

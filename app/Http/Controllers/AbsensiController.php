@@ -21,7 +21,7 @@ class AbsensiController extends Controller
 
 //    public function index($userId)
 //    {
-//        $absensi = Attendance::where('user_id', $userId) // pastikan ada relasi 'perangkat'
+//        $absensi = Absensi::where('user_id', $userId) // pastikan ada relasi 'perangkat'
 //        ->orderBy('tanggal', 'desc')
 //            ->get();
 //
@@ -36,7 +36,7 @@ class AbsensiController extends Controller
     {
         $user = $request->user(); // user yang login (desa)
 
-        $validated = $request->valitanggal([
+        $validated = $request->validate([
             'perangkat_id' => 'required|exists:perangkat_desa,id',
             'kode_desa' => 'required|string',
             'kode_kecamatan' => 'required|string',

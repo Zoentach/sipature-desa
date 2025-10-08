@@ -36,7 +36,7 @@ class PerangkatDesaController extends Controller
 
     public function getPerangkatDesa(Request $request)
     {
-        $request->valitanggal([
+        $request->validate([
             'kode_desa' => 'required|string|max:10',
         ]);
 
@@ -60,7 +60,7 @@ class PerangkatDesaController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->valitanggal([
+        $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'nipd' => 'required|string|max:50',
             'kode_kecamatan' => 'required|string',

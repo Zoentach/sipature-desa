@@ -17,7 +17,7 @@ new class extends Component {
     public function uptanggalPassword(): void
     {
         try {
-            $validated = $this->valitanggal([
+            $validated = $this->validate([
                 'current_password' => ['required', 'string', 'current_password'],
                 'password' => ['required', 'string', Password::defaults(), 'confirmed'],
             ]);

@@ -13,11 +13,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     public function confirmPassword(): void
     {
-        $this->valitanggal([
+        $this->validate([
             'password' => ['required', 'string'],
         ]);
 
-        if (! Auth::guard('web')->valitanggal([
+        if (! Auth::guard('web')->validate([
             'email' => Auth::user()->email,
             'password' => $this->password,
         ])) {

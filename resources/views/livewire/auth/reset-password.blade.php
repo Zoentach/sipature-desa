@@ -32,7 +32,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     public function resetPassword(): void
     {
-        $this->valitanggal([
+        $this->validate([
             'token' => ['required'],
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],

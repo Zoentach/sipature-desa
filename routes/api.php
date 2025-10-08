@@ -16,7 +16,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->get('/perangkat-desa', [PerangkatDesaController::class, 'getPerangkatDesa']);
 
 Route::post('/sanctum/token', function (Request $request) {
-    $request->valitanggal([
+    $request->validate([
         'email' => 'required|email',
         'password' => 'required',
         'device_name' => 'required',
@@ -52,7 +52,7 @@ Route::post('/sanctum/token', function (Request $request) {
 Route::middleware('auth:sanctum')->post('/attendance', [AttendanceController::class, 'store']);
 
 Route::middleware('auth:sanctum')->post('/user/uptanggal-mac', function (Request $request) {
-    $request->valitanggal([
+    $request->validate([
         'mac_address' => ['required', 'string'],
     ]);
 

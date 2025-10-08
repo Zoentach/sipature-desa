@@ -12,7 +12,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     public function sendPasswordResetLink(): void
     {
-        $this->valitanggal([
+        $this->validate([
             'email' => ['required', 'string', 'email'],
         ]);
 
