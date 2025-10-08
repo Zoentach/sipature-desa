@@ -19,7 +19,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     public function register(): void
     {
-        $validated = $this->valitanggal([
+        $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
@@ -36,10 +36,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+    <x-auth-header :title="__('Create an account')"
+                   :description="__('Enter your details below to create your account')"/>
 
     <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    <x-auth-session-status class="text-center" :status="session('status')"/>
 
     <form wire:submit="register" class="flex flex-col gap-6">
         <!-- Name -->

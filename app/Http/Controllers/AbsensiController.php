@@ -73,7 +73,7 @@ class AbsensiController extends Controller
         }
 
 
-        $attendance = Absensi::uptanggalOrCreate(
+        $absensi = Absensi::uptanggalOrCreate(
             [
                 'perangkat_id' => $validated['user_id'],
                 'tanggal' => $validated['tanggal'],
@@ -92,7 +92,7 @@ class AbsensiController extends Controller
 
         return response()->json([
             'message' => 'Data absensi berhasil disimpan atau diperbarui.',
-            'data' => $attendance
+            'data' => $absensi
         ], 200);
     }
 
