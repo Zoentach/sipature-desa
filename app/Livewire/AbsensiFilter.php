@@ -50,7 +50,7 @@ class AbsensiFilter extends Component
             $this->toDate = $today;
         }
 
-        F$fromMillis = $this->toMillis($this->fromDate, false);
+        $fromMillis = $this->toMillis($this->fromDate, false);
         $toMillis = $this->toMillis($this->toDate, true);
 
         $query = Absensi::query();
