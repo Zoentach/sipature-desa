@@ -16,6 +16,8 @@ class Absensi extends Model
 
     // Kolom yang boleh diisi secara mass-assignment
     protected $fillable = [
+        'kode_desa',
+        'kode_kecamatan',
         'perangkat_id',
         'tanggal',
         'absensi_pagi',
@@ -24,6 +26,11 @@ class Absensi extends Model
         'pulang_cepat',
         'gambar_pagi',
         'gambar_sore',
+        'keterangan',
+        'lampiran',
+        'dibuat_pada',
+        'diperbaharui_pada',
+
     ];
 
     // Cast agar field seperti tanggal bisa diproses sebagai integer

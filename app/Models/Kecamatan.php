@@ -18,6 +18,7 @@ class Kecamatan extends Model
     protected $fillable = [
         'nama',
         'kode_kecamatan',
+        'tahun_berdiri',
     ];
 
     public function desas()

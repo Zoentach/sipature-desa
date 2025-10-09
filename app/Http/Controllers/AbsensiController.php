@@ -3,38 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\PerangkatDesa;
-use Illuminate\Http\Request;
 use App\Models\Absensi;
+use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
-
     /**
-     *ambil data
+     * Tampilkan halaman index absensi
      */
-
-
     public function index()
     {
         return view('admin.absensi.index');
     }
-
-//    public function index($userId)
-//    {
-//        $absensi = Absensi::where('user_id', $userId) // pastikan ada relasi 'perangkat'
-//        ->orderBy('tanggal', 'desc')
-//            ->get();
-//
-//        return view('attendance.index', compact('absensi'));
-//    }
-
 
     /**
      * Simpan data absensi ke database
      */
     public function store(Request $request)
     {
-        $user = $request->user(); // user yang login (desa)
+        $user = $request->user(); // user yang login (misalnya desa)
 
         $validated = $request->validate([
             'perangkat_id' => 'required|exists:perangkat_desa,id',
@@ -54,7 +41,7 @@ class AbsensiController extends Controller
         // Ambil data perangkat
         $perangkat = PerangkatDesa::find($validated['perangkat_id']);
 
-        // Cek apakah perangkat ini milik user login (berdasarkan kode_desa)
+        // Pastikan perangkat ini milik desa yang login
         if ($perangkat->kode_desa !== $user->kode_desa) {
             return response()->json([
                 'message' => 'Perangkat ini bukan milik desa Anda.'
@@ -63,30 +50,34 @@ class AbsensiController extends Controller
 
         // Simpan file gambar jika ada
         if ($request->hasFile('gambar_pagi')) {
-            $pathMorning = $request->file('gambar_pagi')->store('foto_absensi', 'public');
-            $validated['gambar_pagi'] = $pathMorning;
+            $validated['gambar_pagi'] = $request->file('gambar_pagi')->store('foto_absensi', 'public');
         }
 
         if ($request->hasFile('gambar_sore')) {
-            $pathAfternoon = $request->file('gambar_sore')->store('foto_absensi', 'public');
-            $validated['gambar_sore'] = $pathAfternoon;
+            $validated['gambar_sore'] = $request->file('gambar_sore')->store('foto_absensi', 'public');
         }
 
+        if ($request->hasFile('lampiran')) {
+            $validated['lampiran'] = $request->file('lampiran')->store('lampiran_absensi', 'public');
+        }
 
-        $absensi = Absensi::uptanggalOrCreate(
+        // ✅ Gunakan updateOrCreate (bukan uptanggalOrCreate)
+        $absensi = Absensi::updateOrCreate(
             [
-                'perangkat_id' => $validated['user_id'],
+                'perangkat_id' => $validated['perangkat_id'],
                 'tanggal' => $validated['tanggal'],
                 'kode_desa' => $validated['kode_desa'],
-                'kode_kecamatan' => $validated['kode_kecamatan']
+                'kode_kecamatan' => $validated['kode_kecamatan'],
             ],
             [
-                'sbsensi_pagi' => $validated['absensi_pagi'] ?? null,
+                'absensi_pagi' => $validated['absensi_pagi'] ?? null,
                 'absensi_sore' => $validated['absensi_sore'] ?? null,
                 'keterlambatan' => $validated['keterlambatan'] ?? null,
                 'pulang_cepat' => $validated['pulang_cepat'] ?? null,
                 'gambar_pagi' => $validated['gambar_pagi'] ?? null,
                 'gambar_sore' => $validated['gambar_sore'] ?? null,
+                'keterangan' => $validated['keterangan'] ?? null,
+                'lampiran' => $validated['lampiran'] ?? null,
             ]
         );
 
@@ -95,5 +86,4 @@ class AbsensiController extends Controller
             'data' => $absensi
         ], 200);
     }
-
 }

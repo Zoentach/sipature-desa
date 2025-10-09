@@ -49,7 +49,7 @@ class PerangkatDesa extends Model
 // relasi di model PerangkatDesa:
     public function absensi()
     {
-        return $this->hasMany(Absensi::class, 'perangkat_id');
+        #return $this->hasMany(Absensi::class, 'perangkat_id');
+        return $this->hasMany(Absensi::class, 'perangkat_id', 'id');
     }
-
 }

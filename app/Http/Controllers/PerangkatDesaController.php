@@ -3,46 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
-use Illuminate\Http\Request;
 use App\Models\PerangkatDesa;
-
+use Illuminate\Http\Request;
 
 class PerangkatDesaController extends Controller
 {
-//    public function detail($id)
-//    {
-//        $perangkat = PerangkatDesa::findOrFail($id);
-//        return view('guest.desa.perangkat', compact('perangkat'));
-//    }
-
+    /**
+     * Detail perangkat desa + relasi absensi
+     */
     public function detail($id)
     {
-        // controller
         $perangkat = PerangkatDesa::with('absensi')->findOrFail($id);
 
         return view('guest.desa.perangkat', compact('perangkat'));
     }
 
+    /**
+     * Hitung jumlah perangkat per grup jabatan
+     */
     public function getDaftarPerangkat()
     {
         $jumlahGrup01 = PerangkatDesa::where('grup_jabatan', '01')
             ->where('status', 'Defenitif')
             ->count();
+
         $jumlahGrup02 = PerangkatDesa::where('grup_jabatan', '02')->count();
         $jumlahGrup03 = PerangkatDesa::where('grup_jabatan', '03')->count();
 
         return view('guest.desa.daftar_perangkat', compact('jumlahGrup01', 'jumlahGrup02', 'jumlahGrup03'));
     }
 
+    /**
+     * Ambil daftar perangkat berdasarkan kode desa (API JSON)
+     */
     public function getPerangkatDesa(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'kode_desa' => 'required|string|max:10',
         ]);
 
-        $kodeDesa = $request->kode_desa;
-
-        $perangkat = PerangkatDesa::where('kode_desa', $kodeDesa)
+        $perangkat = PerangkatDesa::where('kode_desa', $validated['kode_desa'])
             ->whereIn('grup_jabatan', ['01', '02'])
             ->get();
 
@@ -52,34 +52,41 @@ class PerangkatDesaController extends Controller
         ]);
     }
 
-
+    /**
+     * Form create perangkat
+     */
     public function create()
     {
         return view('perangkat_desa.create');
     }
 
+    /**
+     * Simpan data perangkat ke database
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'nipd' => 'required|string|max:50',
-            'kode_kecamatan' => 'required|string',
-            'kode_desa' => 'required|string',
-            'mulai' => 'required|tanggal',
-            'selesai' => 'nullable|tanggal|after_or_equal:mulai',
+            'kode_kecamatan' => 'required|string|max:10',
+            'kode_desa' => 'required|string|max:10',
+            'mulai' => 'required|date',                // ← diperbaiki dari "tanggal" ke "date"
+            'selesai' => 'nullable|date|after_or_equal:mulai', // ← juga diperbaiki
             'nik' => 'required|digits:16',
             'tempat_lahir' => 'required|string|max:50',
-            'tanggal_lahir' => 'required|tanggal',
+            'tanggal_lahir' => 'required|date',
             'sk_id' => 'required|string|max:100',
-            'pendidikan_id' => 'required|string',
+            'pendidikan_id' => 'required|string|max:50',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'agama' => 'required|string',
+            'agama' => 'required|in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu,Lainnya',
             'no_telp' => 'required|string|max:15',
-            'status' => 'required|string',
+            'status' => 'required|in:Defenitif,Plt,Honor,Magang', // ← bisa kamu sesuaikan enum-nya
         ]);
 
         PerangkatDesa::create($validated);
 
-        return redirect()->route('perangkat_desa.create')->with('success', 'Data berhasil disimpan!');
+        return redirect()
+            ->route('perangkat_desa.create')
+            ->with('success', 'Data perangkat desa berhasil disimpan!');
     }
 }
