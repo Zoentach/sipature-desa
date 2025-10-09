@@ -22,16 +22,16 @@ Route::post('/sanctum/token', function (Request $request) {
         'password' => 'required',
     ]);
 
-    $user = User::where('email', $request->email)->first();
+    $user = \App\Models\User::where('email', $request->email)->first();
 
-    if (!$user || !Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['Kredensial yang diberikan salah.'],
+    if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
         ]);
     }
 
-    // Buat token tanpa device_name
-    $token = $user->createToken('default-token')->plainTextToken;
+    // Buat token tanpa device_name dan tanpa expired_at
+    $token = $user->createToken('api_token')->plainTextToken;
 
     return response()->json([
         'token' => $token,
