@@ -24,7 +24,7 @@ class PerangkatDesaController extends Controller
     public function getDaftarPerangkat()
     {
         $jumlahGrup01 = PerangkatDesa::where('grup_jabatan', '01')
-            ->where('status', 'Defenitif')
+            ->where('status_jabatan', 'Definitif') // ← perbaikan nama kolom & value
             ->count();
 
         $jumlahGrup02 = PerangkatDesa::where('grup_jabatan', '02')->count();
@@ -40,7 +40,7 @@ class PerangkatDesaController extends Controller
     {
         $user = $request->user();
 
-        //Ambil data verifikasi terbaru dari user
+        // Ambil data verifikasi terbaru dari user
         $verifikasi = \App\Models\VerifikasiAbsensi::where('user_id', $user->id)
             ->latest()
             ->first();
@@ -52,7 +52,7 @@ class PerangkatDesaController extends Controller
             ], 403);
         }
 
-        //Ambil perangkat berdasarkan kode desa dari verifikasi
+        // Ambil perangkat berdasarkan kode desa dari verifikasi
         $perangkat = PerangkatDesa::where('kode_desa', $verifikasi->kode_desa)
             ->whereIn('grup_jabatan', ['01', '02'])
             ->get();
@@ -78,20 +78,23 @@ class PerangkatDesaController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
-            'nipd' => 'required|string|max:50',
-            'kode_kecamatan' => 'required|string|max:10',
-            'kode_desa' => 'required|string|max:10',
-            'mulai' => 'required|date',                // ← diperbaiki dari "tanggal" ke "date"
-            'selesai' => 'nullable|date|after_or_equal:mulai', // ← juga diperbaiki
-            'nik' => 'required|digits:16',
-            'tempat_lahir' => 'required|string|max:50',
-            'tanggal_lahir' => 'required|date',
-            'sk_id' => 'required|string|max:100',
-            'pendidikan_id' => 'required|string|max:50',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'agama' => 'required|in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu,Lainnya',
-            'no_telp' => 'required|string|max:15',
-            'status' => 'required|in:Defenitif,Plt,Honor,Magang', // ← bisa kamu sesuaikan enum-nya
+            'nipd' => 'nullable|string|max:30|unique:perangkat_desa,nipd',
+            'nik' => 'nullable|string|max:30|unique:perangkat_desa,nik',
+            'kode_kecamatan' => 'nullable|string|max:20',
+            'kode_desa' => 'nullable|string|max:20',
+            'kode_jabatan' => 'nullable|string|max:10',
+            'grup_jabatan' => 'nullable|string|max:50',
+            'mulai' => 'nullable|date',
+            'berakhir' => 'nullable|date|after_or_equal:mulai',
+            'tempat_lahir' => 'nullable|string|max:100',
+            'tanggal_lahir' => 'nullable|date',
+            'sk_id' => 'nullable|integer',
+            'pendidikan_id' => 'nullable|integer',
+            'jenis_kelamin' => 'nullable|in:L,P', // sesuai enum schema
+            'agama' => 'nullable|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
+            'no_telp' => 'nullable|string|max:20',
+            'status_jabatan' => 'nullable|in:Definitif,Pelaksana Tugas,Pelaksana Harian,Kosong',
+            'status_keaktifan' => 'nullable|in:Aktif,Nonaktif,Pensiun,Berhenti',
         ]);
 
         PerangkatDesa::create($validated);

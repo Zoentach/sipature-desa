@@ -14,9 +14,24 @@ class PerangkatDesa extends Model
     public $timestamps = false; // <--- karena tidak timestamp createAt dan uptanggalAt didatabase
 
     protected $fillable = [
-        'nama', 'nipd', 'kode_kecamatan', 'kode_desa', 'kode_jabatan', 'mulai', 'berakhir', 'nik',
-        'tempat_lahir', 'tanggal_lahir', 'sk_id', 'pendidikan_id', 'jenis_kelamin',
-        'agama', 'no_telp', 'status_jabatan', 'status_keaktifan', 'kode_jabatan', 'grup_jabtan',
+        'nama',
+        'nipd',
+        'nik',
+        'kode_kecamatan',
+        'kode_desa',
+        'kode_jabatan',
+        'grup_jabatan',
+        'mulai',
+        'berakhir',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'sk_id',
+        'pendidikan_id',
+        'jenis_kelamin',
+        'agama',
+        'no_telp',
+        'status_jabatan',
+        'status_keaktifan',
     ];
 
     protected $appends = ['nama_jabatan'];

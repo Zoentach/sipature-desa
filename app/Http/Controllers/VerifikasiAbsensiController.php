@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\VerifikasiAbsensi;
+
+class VerifikasiAbsensiController extends Controller
+{
+    /**
+     * Simpan data verifikasi absensi
+     */
+    public function store(Request $request)
+    {
+        $user = $request->user(); // user login dari Sanctum
+
+        // Validasi input
+        $validated = $request->validate([
+            'kode_kecamatan' => 'required|string|max:20',
+            'kode_desa' => 'required|string|max:20',
+            'mac_address' => 'nullable|string|max:50',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+        ]);
+
+        // Simpan atau perbarui data verifikasi untuk user login
+        $verifikasi = VerifikasiAbsensi::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'kode_kecamatan' => $validated['kode_kecamatan'],
+                'kode_desa' => $validated['kode_desa'],
+                'mac_address' => $validated['mac_address'] ?? null,
+                'latitude' => $validated['latitude'] ?? null,
+                'longitude' => $validated['longitude'] ?? null,
+            ]
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data verifikasi berhasil disimpan.',
+            'data' => $verifikasi
+        ], 201);
+    }
+}

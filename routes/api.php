@@ -5,6 +5,7 @@ use App\Http\Controllers\PerangkatDesaController;
 use App\Models\Desa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VerifikasiAbsensiController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
@@ -38,6 +39,10 @@ Route::post('/sanctum/token', function (Request $request) {
         'user' => $user,
     ]);
 });
+
+
+Route::middleware('auth:sanctum')->post('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'store']);
+
 
 Route::middleware('auth:sanctum')->post('/absensi', [AbsensiController::class, 'store']);
 

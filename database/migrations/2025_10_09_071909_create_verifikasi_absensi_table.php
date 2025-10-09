@@ -22,12 +22,6 @@ return new class extends Migration {
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
 
-            // hasil verifikasi (valid / mac_tidak_sesuai / lokasi_terlalu_jauh / dll)
-            $table->string('hasil_verifikasi')->default('pending');
-
-            // waktu verifikasi
-            $table->timestamp('waktu_verifikasi')->nullable();
-
             $table->timestamps();
         });
     }

@@ -15,8 +15,6 @@ class VerifikasiAbsensi extends Model
         'mac_address',
         'latitude',
         'longitude',
-        'hasil_verifikasi',
-        'waktu_verifikasi',
     ];
 
     public function user()
