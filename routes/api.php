@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\PerangkatDesaController;
 use App\Models\Desa;
 use Illuminate\Http\Request;
@@ -15,41 +15,31 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->get('/perangkat-desa', [PerangkatDesaController::class, 'getPerangkatDesa']);
 
+// Login API - tanpa device_name
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
         'password' => 'required',
-        'device_name' => 'required',
     ]);
 
     $user = User::where('email', $request->email)->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
+            'email' => ['Kredensial yang diberikan salah.'],
         ]);
     }
 
-    // Buat token
-    $token = $user->createToken(
-        $request->device_name,
-        ['*'], // abilities
-        now()->addDays(30) // expired_at (optional)
-    );
-
-    // Simpan nama device dan expired_at (jika pakai custom model)
-    $user->tokens()->keterlambatanst()->first()->uptanggal([
-        'device_name' => $request->device_name,
-        'expired_at' => now()->addDays(30),
-    ]);
+    // Buat token tanpa device_name
+    $token = $user->createToken('default-token')->plainTextToken;
 
     return response()->json([
-        'token' => $token->plainTextToken,
+        'token' => $token,
         'user' => $user,
     ]);
 });
 
-Route::middleware('auth:sanctum')->post('/attendance', [AttendanceController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/attendance', [AbsensiController::class, 'store']);
 
 Route::middleware('auth:sanctum')->post('/user/uptanggal-mac', function (Request $request) {
     $request->validate([
