@@ -39,9 +39,9 @@ Route::post('/sanctum/token', function (Request $request) {
     ]);
 });
 
-Route::middleware('auth:sanctum')->post('/attendance', [AbsensiController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/absensi', [AbsensiController::class, 'store']);
 
-Route::middleware('auth:sanctum')->post('/user/uptanggal-mac', function (Request $request) {
+Route::middleware('auth:sanctum')->post('/user/update-mac', function (Request $request) {
     $request->validate([
         'mac_address' => ['required', 'string'],
     ]);

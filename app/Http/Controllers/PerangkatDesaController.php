@@ -38,11 +38,22 @@ class PerangkatDesaController extends Controller
      */
     public function getPerangkatDesa(Request $request)
     {
-        $validated = $request->validate([
-            'kode_desa' => 'required|string|max:10',
-        ]);
+        $user = $request->user();
 
-        $perangkat = PerangkatDesa::where('kode_desa', $validated['kode_desa'])
+        //Ambil data verifikasi terbaru dari user
+        $verifikasi = \App\Models\VerifikasiAbsensi::where('user_id', $user->id)
+            ->latest()
+            ->first();
+
+        if (!$verifikasi) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data verifikasi tidak ditemukan. Silakan lakukan verifikasi terlebih dahulu.'
+            ], 403);
+        }
+
+        //Ambil perangkat berdasarkan kode desa dari verifikasi
+        $perangkat = PerangkatDesa::where('kode_desa', $verifikasi->kode_desa)
             ->whereIn('grup_jabatan', ['01', '02'])
             ->get();
 

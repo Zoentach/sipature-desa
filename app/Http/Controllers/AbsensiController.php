@@ -4,29 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\PerangkatDesa;
 use App\Models\Absensi;
+use App\Models\VerifikasiAbsensi;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
-    /**
-     * Tampilkan halaman index absensi
-     */
     public function index()
     {
         return view('admin.absensi.index');
     }
 
-    /**
-     * Simpan data absensi ke database
-     */
     public function store(Request $request)
     {
-        $user = $request->user(); // user yang login (misalnya desa)
+        $user = $request->user(); // user login
 
         $validated = $request->validate([
             'perangkat_id' => 'required|exists:perangkat_desa,id',
-            'kode_desa' => 'required|string',
-            'kode_kecamatan' => 'required|string',
             'tanggal' => 'required|date',
             'absensi_pagi' => 'nullable|date_format:H:i:s',
             'absensi_sore' => 'nullable|date_format:H:i:s',
@@ -38,17 +31,44 @@ class AbsensiController extends Controller
             'lampiran' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
-        // Ambil data perangkat
-        $perangkat = PerangkatDesa::find($validated['perangkat_id']);
+        // Ambil perangkat desa
+        $perangkat = PerangkatDesa::findOrFail($validated['perangkat_id']);
 
-        // Pastikan perangkat ini milik desa yang login
-        if ($perangkat->kode_desa !== $user->kode_desa) {
+        //  Ambil data verifikasi user (bisa latest)
+        $verifikasiAbsensi = VerifikasiAbsensi::where('user_id', $user->id)
+            ->latest()
+            ->first();
+
+        if (!$verifikasiAbsensi) {
+            return response()->json([
+                'message' => 'Data verifikasi tidak ditemukan. Silakan lakukan verifikasi terlebih dahulu.'
+            ], 403);
+        }
+
+        //Pastikan kode desa cocok
+        if ($perangkat->kode_desa !== $verifikasiAbsensi->kode_desa) {
             return response()->json([
                 'message' => 'Perangkat ini bukan milik desa Anda.'
             ], 403);
         }
 
-        // Simpan file gambar jika ada
+        //(Opsional) Validasi lokasi dalam radius 10 meter
+        if ($verifikasiAbsensi->latitude && $verifikasiAbsensi->longitude && $user->latitude && $user->longitude) {
+            $distance = $this->calculateDistance(
+                $verifikasiAbsensi->latitude,
+                $verifikasiAbsensi->longitude,
+                $request->latitude ?? 0,
+                $request->longitude ?? 0
+            );
+
+            if ($distance > 10) {
+                return response()->json([
+                    'message' => 'Anda berada di luar radius 10 meter dari lokasi verifikasi.'
+                ], 403);
+            }
+        }
+
+        // Upload file jika ada
         if ($request->hasFile('gambar_pagi')) {
             $validated['gambar_pagi'] = $request->file('gambar_pagi')->store('foto_absensi', 'public');
         }
@@ -61,13 +81,13 @@ class AbsensiController extends Controller
             $validated['lampiran'] = $request->file('lampiran')->store('lampiran_absensi', 'public');
         }
 
-        // ✅ Gunakan updateOrCreate (bukan uptanggalOrCreate)
+        // Simpan absensi (gunakan updateOrCreate agar tidak duplikat)
         $absensi = Absensi::updateOrCreate(
             [
                 'perangkat_id' => $validated['perangkat_id'],
                 'tanggal' => $validated['tanggal'],
-                'kode_desa' => $validated['kode_desa'],
-                'kode_kecamatan' => $validated['kode_kecamatan'],
+                'kode_desa' => $verifikasiAbsensi->kode_desa,
+                'kode_kecamatan' => $verifikasiAbsensi->kode_kecamatan,
             ],
             [
                 'absensi_pagi' => $validated['absensi_pagi'] ?? null,
@@ -85,5 +105,25 @@ class AbsensiController extends Controller
             'message' => 'Data absensi berhasil disimpan atau diperbarui.',
             'data' => $absensi
         ], 200);
+    }
+
+    /**
+     * Hitung jarak antara dua titik koordinat (meter)
+     */
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371000; // meter
+        $latFrom = deg2rad($lat1);
+        $lonFrom = deg2rad($lon1);
+        $latTo = deg2rad($lat2);
+        $lonTo = deg2rad($lon2);
+
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+                cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+
+        return $earthRadius * $angle;
     }
 }
