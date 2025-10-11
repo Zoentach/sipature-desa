@@ -21,8 +21,8 @@ class AbsensiController extends Controller
         $validated = $request->validate([
             'perangkat_id' => 'required|exists:perangkat_desa,id',
             'tanggal' => 'required|date',
-            'absensi_pagi' => 'nullable|date_format:H:i:s',
-            'absensi_sore' => 'nullable|date_format:H:i:s',
+            'absensi_pagi' => 'nullable|datetime:H:i:s',
+            'absensi_sore' => 'nullable|datetime:H:i:s',
             'keterlambatan' => 'nullable|integer',
             'pulang_cepat' => 'nullable|integer',
             'gambar_pagi' => 'nullable|file|image|max:2048',
