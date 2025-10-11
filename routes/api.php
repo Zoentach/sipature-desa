@@ -6,9 +6,6 @@ use App\Models\Desa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VerifikasiAbsensiController;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use App\Models\User;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -41,8 +38,9 @@ Route::post('/sanctum/token', function (Request $request) {
 });
 
 
+//verikasi absensi
 Route::middleware('auth:sanctum')->post('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'store']);
-
+Route::middleware('auth:sanctum')->get('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'getVerifikasiAbsensi']);
 
 Route::middleware('auth:sanctum')->post('/absensi', [AbsensiController::class, 'store']);
 
@@ -60,7 +58,6 @@ Route::middleware('auth:sanctum')->post('/user/update-mac', function (Request $r
         'mac_address' => $user->mac_address,
     ]);
 });
-
 
 Route::get('/desas', function (Request $request) {
     $kodeKec = $request->get('kode_kecamatan');

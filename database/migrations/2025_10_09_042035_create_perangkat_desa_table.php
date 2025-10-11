@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('kode_kecamatan', 20)->nullable();
             $table->string('kode_desa', 20)->nullable();
             $table->string('kode_jabatan', 10)->nullable();
-            $table->string('grup_jabtan', 50)->nullable();
+            $table->string('grup_jabatan', 50)->nullable();
 
             $table->date('mulai')->nullable();
             $table->date('berakhir')->nullable();

@@ -24,7 +24,8 @@ class VerifikasiAbsensiController extends Controller
         ]);
 
         // Simpan atau perbarui data verifikasi untuk user login
-        $verifikasi = VerifikasiAbsensi::updateOrCreate(
+        //$verifikasi = VerifikasiAbsensi::updateOrCreate(
+        $verifikasi = VerifikasiAbsensi::firstOrCreate(
             ['user_id' => $user->id],
             [
                 'kode_kecamatan' => $validated['kode_kecamatan'],
@@ -41,4 +42,25 @@ class VerifikasiAbsensiController extends Controller
             'data' => $verifikasi
         ], 201);
     }
+
+    public function getVerifikasiAbsensi(Request $request)
+    {
+        $user = $request->user(); // user yang sedang login
+
+        // Ambil data verifikasi milik user login
+        $verifikasi = \App\Models\VerifikasiAbsensi::where('user_id', $user->id)->first();
+
+        if (!$verifikasi) {
+            return response()->json([
+                'status' => 'not_found',
+                'message' => 'Data verifikasi belum tersedia untuk user ini.',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $verifikasi
+        ], 200);
+    }
+
 }
