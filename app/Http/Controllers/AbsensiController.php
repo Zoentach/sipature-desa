@@ -106,10 +106,10 @@ class AbsensiController extends Controller
                 'tanggal' => $validated['tanggal'],
                 'kode_desa' => $verifikasiAbsensi->kode_desa,
                 'kode_kecamatan' => $verifikasiAbsensi->kode_kecamatan,
-            ],
-            [
                 'absensi_pagi' => $validated['absensi_pagi'] ?? null,
                 'absensi_sore' => $validated['absensi_sore'] ?? null,
+            ],
+            [
                 'keterlambatan' => $validated['keterlambatan'] ?? null,
                 'pulang_cepat' => $validated['pulang_cepat'] ?? null,
                 'gambar_pagi' => $validated['gambar_pagi'] ?? null,

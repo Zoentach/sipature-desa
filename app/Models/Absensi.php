@@ -36,8 +36,8 @@ class Absensi extends Model
     // Cast agar field seperti tanggal bisa diproses sebagai integer
     protected $casts = [
         'tanggal' => 'date',
-        'absensi_pagi' => 'date_format:H:i:s',
-        'absensi_sore' => 'date_format:H:i:s',
+        //'absensi_pagi' => 'date_format:H:i:s',
+        //'absensi_sore' => 'date_format:H:i:s',
         'keterlambatan' => 'integer',
         'pulang_cepat' => 'integer',
         'gambar_pagi' => 'string',
