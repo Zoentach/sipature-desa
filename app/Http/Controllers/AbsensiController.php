@@ -106,10 +106,10 @@ class AbsensiController extends Controller
                 'tanggal' => $validated['tanggal'],
                 'kode_desa' => $verifikasiAbsensi->kode_desa,
                 'kode_kecamatan' => $verifikasiAbsensi->kode_kecamatan,
-                'absensi_pagi' => $validated['absensi_pagi'] ?? null,
-                'absensi_sore' => $validated['absensi_sore'] ?? null,
             ],
             [
+                'absensi_pagi' => $validated['absensi_pagi'] ?? null,
+                'absensi_sore' => $validated['absensi_sore'] ?? null,
                 'keterlambatan' => $validated['keterlambatan'] ?? null,
                 'pulang_cepat' => $validated['pulang_cepat'] ?? null,
                 'gambar_pagi' => $validated['gambar_pagi'] ?? null,
@@ -118,6 +118,7 @@ class AbsensiController extends Controller
                 'lampiran' => $validated['lampiran'] ?? null,
             ]
         );
+
 
         return response()->json([
             'message' => 'Data absensi berhasil disimpan atau diperbarui.',
@@ -150,33 +151,31 @@ class AbsensiController extends Controller
             return response()->json(['message' => 'Kode desa tidak sesuai.'], 403);
         }
 
-        //Simpan lampiran ke storage
+        // Simpan lampiran ke storage
         $lampiranPath = $request->file('lampiran')->store('lampiran_absensi', 'public');
 
-        //Cek apakah sudah ada absensi di tanggal itu
-        $existingAbsensi = Absensi::where('perangkat_id', $validated['perangkat_id'])
-            ->where('tanggal', $validated['tanggal'])
-            ->first();
-
-        if ($existingAbsensi) {
-            return response()->json(['message' => 'Absensi pada tanggal ini sudah tercatat.'], 409);
-        }
-
-        //Simpan data izin
-        $absensi = Absensi::create([
-            'perangkat_id' => $validated['perangkat_id'],
-            'tanggal' => $validated['tanggal'],
-            'kode_desa' => $verifikasiAbsensi->kode_desa,
-            'kode_kecamatan' => $verifikasiAbsensi->kode_kecamatan,
-            'keterangan' => $validated['keterangan'], // enum: Izin, Sakit, Cuti, dll
-            'lampiran' => $lampiranPath,
-            'keterlambatan' => 0,
-            'pulang_cepat' => 0,
-            'status_kehadiran' => 'Pending', // menunggu persetujuan atasan
-        ]);
+        // Create or Replace berdasarkan perangkat_id + tanggal
+        $absensi = Absensi::updateOrCreate(
+            [
+                'perangkat_id' => $validated['perangkat_id'],
+                'tanggal' => $validated['tanggal'],
+            ],
+            [
+                'kode_desa' => $verifikasiAbsensi->kode_desa,
+                'kode_kecamatan' => $verifikasiAbsensi->kode_kecamatan,
+                'keterangan' => $validated['keterangan'], // enum: Izin, Sakit, Cuti, Tugas Luar
+                'lampiran' => $lampiranPath,
+                'keterlambatan' => 0,
+                'pulang_cepat' => 0,
+                'status_kehadiran' => 'Pending', // menunggu persetujuan atasan
+                'sync_status' => 0,
+                'absensi_pagi' => null,
+                'absensi_sore' => null,
+            ]
+        );
 
         return response()->json([
-            'message' => 'Pengajuan izin berhasil dikirim dan menunggu persetujuan atasan.',
+            'message' => 'Data izin berhasil disimpan atau diperbarui.',
             'data' => $absensi
         ], 200);
     }
