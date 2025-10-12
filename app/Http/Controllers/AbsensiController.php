@@ -79,7 +79,7 @@ class AbsensiController extends Controller
                 $request->longitude ?? 0
             );
 
-            if ($distance > 10) {
+            if ($distance > 10000000) {
                 return response()->json([
                     'message' => 'Anda berada di luar radius 10 meter dari lokasi verifikasi.'
                 ], 403);
