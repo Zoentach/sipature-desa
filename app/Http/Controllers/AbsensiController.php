@@ -114,7 +114,7 @@ class AbsensiController extends Controller
                 'pulang_cepat' => $validated['pulang_cepat'] ?? null,
                 'gambar_pagi' => $validated['gambar_pagi'] ?? null,
                 'gambar_sore' => $validated['gambar_sore'] ?? null,
-                'keterangan' => $validated['keterangan'] ?? null,
+                'keterangan' => 'hadir',
                 'lampiran' => $validated['lampiran'] ?? null,
             ]
         );
@@ -124,6 +124,63 @@ class AbsensiController extends Controller
             'data' => $absensi
         ], 200);
     }
+
+    public function storeLampiran(Request $request)
+    {
+        $user = $request->user();
+
+        // Validasi input
+        $validated = $request->validate([
+            'perangkat_id' => 'required|exists:perangkat_desa,id',
+            'tanggal' => 'required|date',
+            'keterangan' => 'required|in:Izin,Sakit,Cuti,Tugas Luar',
+            'lampiran' => 'required|file|mimes:pdf|max:2048',
+        ]);
+
+        // Ambil data perangkat
+        $perangkat = PerangkatDesa::findOrFail($validated['perangkat_id']);
+
+        // Verifikasi user dan kode desa
+        $verifikasiAbsensi = VerifikasiAbsensi::where('user_id', $user->id)->latest()->first();
+        if (!$verifikasiAbsensi) {
+            return response()->json(['message' => 'Data verifikasi tidak ditemukan.'], 403);
+        }
+
+        if ($perangkat->kode_desa !== $verifikasiAbsensi->kode_desa) {
+            return response()->json(['message' => 'Kode desa tidak sesuai.'], 403);
+        }
+
+        //Simpan lampiran ke storage
+        $lampiranPath = $request->file('lampiran')->store('lampiran_absensi', 'public');
+
+        //Cek apakah sudah ada absensi di tanggal itu
+        $existingAbsensi = Absensi::where('perangkat_id', $validated['perangkat_id'])
+            ->where('tanggal', $validated['tanggal'])
+            ->first();
+
+        if ($existingAbsensi) {
+            return response()->json(['message' => 'Absensi pada tanggal ini sudah tercatat.'], 409);
+        }
+
+        //Simpan data izin
+        $absensi = Absensi::create([
+            'perangkat_id' => $validated['perangkat_id'],
+            'tanggal' => $validated['tanggal'],
+            'kode_desa' => $verifikasiAbsensi->kode_desa,
+            'kode_kecamatan' => $verifikasiAbsensi->kode_kecamatan,
+            'keterangan' => $validated['keterangan'], // enum: Izin, Sakit, Cuti, dll
+            'lampiran' => $lampiranPath,
+            'keterlambatan' => 0,
+            'pulang_cepat' => 0,
+            'status_kehadiran' => 'pending', // menunggu persetujuan atasan
+        ]);
+
+        return response()->json([
+            'message' => 'Pengajuan izin berhasil dikirim dan menunggu persetujuan atasan.',
+            'data' => $absensi
+        ], 200);
+    }
+
 
     /**
      * Hitung jarak antara dua titik koordinat (meter)

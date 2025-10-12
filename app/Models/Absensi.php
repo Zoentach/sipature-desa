@@ -28,8 +28,7 @@ class Absensi extends Model
         'gambar_sore',
         'keterangan',
         'lampiran',
-        'dibuat_pada',
-        'diperbaharui_pada',
+        'status_kehadiran'
 
     ];
 

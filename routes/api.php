@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->post('/verifikasi-absensi', [VerifikasiAbsens
 Route::middleware('auth:sanctum')->get('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'getVerifikasiAbsensi']);
 
 Route::middleware('auth:sanctum')->post('/absensi', [AbsensiController::class, 'store']);
+Route::middleware('auth:sanctum')->post('/absensi/lampiran', [AbsensiController::class, 'storeLampiran']);
 
 Route::middleware('auth:sanctum')->post('/user/update-mac', function (Request $request) {
     $request->validate([

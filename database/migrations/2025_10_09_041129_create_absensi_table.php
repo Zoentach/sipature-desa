@@ -29,11 +29,11 @@ return new class extends Migration {
             $table->string('gambar_pagi')->nullable();
             $table->string('gambar_sore')->nullable();
 
-            $table->text('keterangan')->nullable();
+            $table->enum('keterangan', ['Hadir', 'Izin', 'Sakit', 'Cuti', 'Tugas Luar'])
+                ->default('Hadir');
             $table->string('lampiran')->nullable();
-
-            $table->timestamp('dibuat_pada')->nullable();
-            $table->timestamp('diperbaharui_pada')->nullable();
+            $table->enum('status_kehadiran', ['Pending', 'Ditolak', 'Disetujui'])
+                ->default('Disetujui');
 
             // Kalau kamu ingin created_at dan updated_at otomatis dari Laravel
             $table->timestamps();
