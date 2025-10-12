@@ -114,7 +114,7 @@ class AbsensiController extends Controller
                 'pulang_cepat' => $validated['pulang_cepat'] ?? null,
                 'gambar_pagi' => $validated['gambar_pagi'] ?? null,
                 'gambar_sore' => $validated['gambar_sore'] ?? null,
-                'keterangan' => 'hadir',
+                'keterangan' => 'Hadir',
                 'lampiran' => $validated['lampiran'] ?? null,
             ]
         );
@@ -172,7 +172,7 @@ class AbsensiController extends Controller
             'lampiran' => $lampiranPath,
             'keterlambatan' => 0,
             'pulang_cepat' => 0,
-            'status_kehadiran' => 'pending', // menunggu persetujuan atasan
+            'status_kehadiran' => 'Pending', // menunggu persetujuan atasan
         ]);
 
         return response()->json([
