@@ -23,18 +23,26 @@ class VerifikasiAbsensiController extends Controller
             'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
-        // Simpan atau perbarui data verifikasi untuk user login
-        //$verifikasi = VerifikasiAbsensi::updateOrCreate(
-        $verifikasi = VerifikasiAbsensi::firstOrCreate(
-            ['user_id' => $user->id],
-            [
-                'kode_kecamatan' => $validated['kode_kecamatan'],
-                'kode_desa' => $validated['kode_desa'],
-                'mac_address' => $validated['mac_address'] ?? null,
-                'latitude' => $validated['latitude'] ?? null,
-                'longitude' => $validated['longitude'] ?? null,
-            ]
-        );
+        // Cek apakah sudah ada verifikasi untuk user ini
+        $existing = VerifikasiAbsensi::where('user_id', $user->id)->first();
+
+        if ($existing) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Data verifikasi sudah ada untuk user ini.',
+                'data' => $existing
+            ], 409); // 409 Conflict
+        }
+
+        // Buat baru jika belum ada
+        $verifikasi = VerifikasiAbsensi::create([
+            'user_id' => $user->id,
+            'kode_kecamatan' => $validated['kode_kecamatan'],
+            'kode_desa' => $validated['kode_desa'],
+            'mac_address' => $validated['mac_address'] ?? null,
+            'latitude' => $validated['latitude'] ?? null,
+            'longitude' => $validated['longitude'] ?? null,
+        ]);
 
         return response()->json([
             'status' => 'success',
@@ -42,6 +50,7 @@ class VerifikasiAbsensiController extends Controller
             'data' => $verifikasi
         ], 201);
     }
+
 
     public function getVerifikasiAbsensi(Request $request)
     {
