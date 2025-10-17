@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
 {
+    private const absensiDistance = 1000000;
+
     public function index()
     {
         return view('admin.absensi.index');
@@ -79,7 +81,7 @@ class AbsensiController extends Controller
                 $request->longitude ?? 0
             );
 
-            if ($distance > 10000000) {
+            if ($distance > self::absensiDistance) {
                 return response()->json([
                     'message' => 'Anda berada di luar radius 10 meter dari lokasi verifikasi.'
                 ], 403);
@@ -149,6 +151,40 @@ class AbsensiController extends Controller
 
         if ($perangkat->kode_desa !== $verifikasiAbsensi->kode_desa) {
             return response()->json(['message' => 'Kode desa tidak sesuai.'], 403);
+        }
+
+        $macAddress = $request->mac_address ?? null;
+
+        if (!$macAddress) {
+            return response()->json([
+                'message' => 'MAC Address tidak ditemukan di permintaan.'
+            ], 400);
+        }
+
+        if ($verifikasiAbsensi->mac_address !== $macAddress) {
+            return response()->json([
+                'message' => 'Perangkat ini tidak terverifikasi. MAC Address tidak cocok.'
+            ], 403);
+        }
+
+        //(Opsional) Validasi lokasi dalam radius 10 meter
+        if ($verifikasiAbsensi->latitude &&
+            $verifikasiAbsensi->longitude &&
+            $request->latitude &&
+            $request->longitude) {
+
+            $distance = $this->calculateDistance(
+                $verifikasiAbsensi->latitude,
+                $verifikasiAbsensi->longitude,
+                $request->latitude ?? 0,
+                $request->longitude ?? 0
+            );
+
+            if ($distance > self::absensiDistance) {
+                return response()->json([
+                    'message' => 'Anda berada di luar radius 10 meter dari lokasi verifikasi.'
+                ], 403);
+            }
         }
 
         // Simpan lampiran ke storage
