@@ -26,13 +26,29 @@
         </div>
 
         <div>
-            <label for="tanggal" class="block mb-1 font-semibold text-gray-700 dark:text-white"> Dari </label> <input
-                type="tanggal" wire:model.live="fromDate" id="tanggal" class="border rounded px-3 py-2"/>
+            <label for="fromDate" class="block mb-1 font-semibold text-gray-700 dark:text-white">
+                Dari
+            </label>
+            <input
+                type="date"
+                wire:model.live="fromDate"
+                id="fromDate"
+                class="border rounded px-3 py-2"
+            />
         </div>
+
         <div>
-            <label for="tanggal" class="block mb-1 font-semibold text-gray-700 dark:text-white"> Sampai </label> <input
-                type="tanggal" wire:model.live="toDate" id="tanggal" class="border rounded px-3 py-2"/>
+            <label for="toDate" class="block mb-1 font-semibold text-gray-700 dark:text-white">
+                Sampai
+            </label>
+            <input
+                type="date"
+                wire:model.live="toDate"
+                id="toDate"
+                class="border rounded px-3 py-2"
+            />
         </div>
+
     </div>
     <!-- Daftar Absensi -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4">
