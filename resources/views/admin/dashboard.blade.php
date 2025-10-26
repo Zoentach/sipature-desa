@@ -30,6 +30,7 @@
                     <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Sipature Desa</span>
                 </a>
             </div>
+            <!--
             <div class="flex items-center">
                 <div class="flex items-center ms-3">
                     <div>
@@ -77,6 +78,7 @@
                     </div>
                 </div>
             </div>
+             -->
         </div>
     </div>
 </nav>
@@ -86,6 +88,34 @@
        aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
+            <li>
+                <button type="button"
+                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        aria-controls="sekretaris" data-collapse-toggle="sekretaris">
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Sekretaris</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <ul id="sekretaris" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pegawai</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Tugas
+                            Luar</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Absensi
+                            Tamu</a>
+                    </li>
+                </ul>
+            </li>
             <li>
                 <button type="button"
                         class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -112,6 +142,44 @@
                         <a href="#"
                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">BPD</a>
                     </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pemuka
+                            Agama</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Penerima
+                            BLT</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">IDM</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Peraturan
+                            Bupati</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Permendagri</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Peraturan
+                            Daerah</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Anggaran
+                            Desa</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Aset
+                            dan Pengadaan</a>
+                    </li>
                 </ul>
             </li>
             <li>
@@ -128,11 +196,11 @@
                 <ul id="ekonomi" class="hidden py-2 space-y-2">
                     <li>
                         <a href="#"
-                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Kopdes</a>
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Bumdes</a>
                     </li>
                     <li>
                         <a href="#"
-                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">BPD</a>
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Kopdes</a>
                     </li>
                 </ul>
             </li>
@@ -150,28 +218,52 @@
                 <ul id="dropdown-example" class="hidden py-2 space-y-2">
                     <li>
                         <a href="#"
-                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Perangkat
-                            Desa</a>
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">LPMD/SK</a>
                     </li>
                     <li>
                         <a href="#"
-                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">BPD</a>
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">PKK/SK</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Kader
+                            Posyandu/SK</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Tokoh
+                            Adat</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Desa
+                            Binaan</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Juknis
+                            PTP2WKSS</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                           class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Indikator
+                            Desa Binaan</a>
                     </li>
                 </ul>
             </li>
 
-            <li>
-                <a href="#"
-                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <svg
-                        class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Sign In</span>
-                </a>
-            </li>
+            <!-- <li>
+                 <a href="#"
+                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                     <svg
+                         class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                               d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                     </svg>
+                     <span class="flex-1 ms-3 whitespace-nowrap">Sign In</span>
+                 </a>
+             </li> -->
             <li>
                 <a href="#"
                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -184,7 +276,7 @@
                         <path
                             d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z"/>
                     </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Pengguna Baru</span>
                 </a>
             </li>
         </ul>
