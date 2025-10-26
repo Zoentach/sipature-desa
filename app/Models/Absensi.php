@@ -10,7 +10,7 @@ class Absensi extends Model
 
     // Jika nama tabel tidak mengikuti konvensi jamak, tentukan manual
     protected $table = 'absensi';
-
+   
     // Jika kamu tidak menggunakan kolom `created_at` dan `uptanggald_at`
     // public $timestamps = false;
 

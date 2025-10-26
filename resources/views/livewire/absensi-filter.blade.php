@@ -56,9 +56,9 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="w-40 px-4 py-3 text-center">Tanggal</th>
-                <th scope="col" class="px-4 py-3 text-center">Pagi</th>
+                <!--   <th scope="col" class="px-4 py-3 text-center">Pagi</th> -->
                 <th scope="col" class="px-4 py-3 text-center">Terlambat</th>
-                <th scope="col" class="px-4 py-3 text-center">Sore</th>
+                <!--  <th scope="col" class="px-4 py-3 text-center">Sore</th> -->
                 <th scope="col" class="px-4 py-3 text-center">Pulang Cepat</th>
                 <th scope="col" class="px-4 py-3 text-center">Gambar Pagi</th>
                 <th scope="col" class="px-4 py-3 text-center">Gambar Sore</th>
@@ -68,17 +68,17 @@
             @forelse($this->absensi as $absensi)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="w-40 px-4 py-4 text-center">
-                    {{ \Carbon\Carbon::createFromTimestamp($absensi->tanggal / 1000)->format('d M Y') }}
+                    {{ $absensi->tanggal->format('d M Y') }}
                 </td>
-                <td class="px-4 py-4 text-center">
-                    {{ $absensi->absensi_pagi ? tanggal('H:i', $absensi->absensi_pagi) : '-' }}
-                </td>
+                <!--                <td class="px-4 py-4 text-center">
+                                 {{ $absensi->absensi_pagi ? tanggal('H:i', $absensi->absensi_pagi) : '-' }}
+                           </td> -->
                 <td class="px-4 py-4 text-center">
                     {{ $absensi->keterlambatan ? $absensi->keterlambatan . ' menit' : '-' }}
                 </td>
-                <td class="px-4 py-4 text-center">
-                    {{ $absensi->absensi_sore ? tanggal('H:i', $absensi->absensi_sore) : '-' }}
-                </td>
+                <!--              <td class="px-4 py-4 text-center">
+               //                    {{ $absensi->absensi_sore ? tanggal('H:i', $absensi->absensi_sore) : '-' }}
+               //                </td> -->
                 <td class="px-4 py-4 text-center">
                     {{ $absensi->pulang_cepat ? $absensi->pulang_cepat . ' menit' : '-' }}
                 </td>
