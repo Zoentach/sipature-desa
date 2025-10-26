@@ -14,7 +14,7 @@ class Logout
     {
         Auth::guard('web')->logout();
 
-        Session::invalitanggal();
+        Session::invalidate();
         Session::regenerateToken();
 
         return redirect('/');

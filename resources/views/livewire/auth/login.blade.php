@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Valitanggal;
+use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {
-    #[Valitanggal('required|string|email')]
+    #[\Livewire\Attributes\Validate('required|string|email')]
     public string $email = '';
 
-    #[Valitanggal('required|string')]
+    #[\Livewire\Attributes\Validate('required|string')]
     public string $password = '';
 
     public bool $remember = false;
