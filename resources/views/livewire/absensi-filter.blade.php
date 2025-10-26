@@ -20,7 +20,7 @@
             <select wire:model.live="kodeDesa" id="desa" class="border rounded px-3 py-2">
                 <option value="">-- Pilih Desa --</option>
                 @foreach($this->desas as $desa)
-                <option value=" {{ $desa->kode_desa }}">{{ $desa->nama}}</option>
+                <option value="{{ $desa->kode_desa }}">{{ $desa->nama}}</option>
                 @endforeach
             </select>
         </div>

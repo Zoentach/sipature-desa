@@ -50,11 +50,7 @@ class AbsensiFilter extends Component
             $this->toDate = $today;
         }
 
-        $fromMillis = $this->toMillis($this->fromDate, false);
-        $toMillis = $this->toMillis($this->toDate, true);
-
         $query = Absensi::query();
-
 
         if ($this->kodeDesa) {
             // filter desa spesifik
@@ -65,22 +61,13 @@ class AbsensiFilter extends Component
             $query->whereIn('kode_desa', $desaIds);
         }
 
-        return $query->whereBetween('tanggal', [$fromMillis, $toMillis])->get();
-
+        // Karena kolom 'tanggal' di database bertipe DATE (format: YYYY-MM-DD)
+        return $query->whereBetween('tanggal', [$this->fromDate, $this->toDate])->get();
     }
 
     public
     function render()
     {
         return view('livewire.absensi-filter');
-    }
-
-
-    private
-    function toMillis($selectedDate, bool $endOfDay = false)
-    {
-        $time = $endOfDay ? '23:59:59' : '00:00:00';
-        $DateTime = new \DateTime($selectedDate . ' ' . $time, new \DateTimeZone('Asia/Jakarta'));
-        return $DateTime->getTimestamp() * 1000;
     }
 }
