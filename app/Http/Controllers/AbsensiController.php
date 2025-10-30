@@ -153,19 +153,19 @@ class AbsensiController extends Controller
             return response()->json(['message' => 'Kode desa tidak sesuai.'], 403);
         }
 
-        $macAddress = $request->mac_address ?? null;
-
-        if (!$macAddress) {
-            return response()->json([
-                'message' => 'MAC Address tidak ditemukan di permintaan.'
-            ], 400);
-        }
-
-        if ($verifikasiAbsensi->mac_address !== $macAddress) {
-            return response()->json([
-                'message' => 'Perangkat ini tidak terverifikasi. MAC Address tidak cocok.'
-            ], 403);
-        }
+//        $macAddress = $request->mac_address ?? null;
+//
+//        if (!$macAddress) {
+//            return response()->json([
+//                'message' => 'MAC Address tidak ditemukan di permintaan.'
+//            ], 400);
+//        }
+//
+//        if ($verifikasiAbsensi->mac_address !== $macAddress) {
+//            return response()->json([
+//                'message' => 'Perangkat ini tidak terverifikasi. MAC Address tidak cocok.'
+//            ], 403);
+//        }
 
         //(Opsional) Validasi lokasi dalam radius 10 meter
         if ($verifikasiAbsensi->latitude &&
