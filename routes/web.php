@@ -37,6 +37,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/pengajuan-izin', [AbsensiController::class, 'izin'])->name('absensi.izin');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 

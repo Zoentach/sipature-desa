@@ -16,6 +16,11 @@ class AbsensiController extends Controller
         return view('admin.absensi.index');
     }
 
+    public function izin()
+    {
+        return view('admin.absensi.izin');
+    }
+
     public function store(Request $request)
     {
         $user = $request->user(); // user login
