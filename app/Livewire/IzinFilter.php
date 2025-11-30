@@ -15,6 +15,12 @@ class IzinFilter extends Component
     public $fromDate;
     public $toDate;
 
+    public $selectedId;
+
+    public $modalMessage = '';
+
+    public string $search = '';
+
     public function updatedKodeKec()
     {
         $this->kodeDesa = null;
@@ -61,8 +67,57 @@ class IzinFilter extends Component
             $query->whereIn('kode_desa', $desaIds);
         }
 
+        // Filter pencarian nama perangkat
+        if ($this->search) {
+            $query->whereHas('perangkat', function ($q) {
+                $q->where('nama', 'like', '%' . $this->search . '%');
+            });
+        }
+
+
+        $query->whereIn('keterangan', [
+            'Izin',
+            'Tugas Luar',
+            'Sakit',
+            'Cuti',
+        ])
+            ->where('status_kehadiran', 'Pending');
+
         // Karena kolom 'tanggal' di database bertipe DATE (format: YYYY-MM-DD)
-        return $query->whereBetween('tanggal', [$this->fromDate, $this->toDate])->get();
+        //  return $query->whereBetween('tanggal', [$this->fromDate, $this->toDate])->get();
+        return $query->get();
+    }
+
+    public function confirmSetujui($id)
+    {
+        $this->selectedId = $id;
+        $this->modalMessage = 'Apakah Anda yakin ingin menyetujui izin ini?';
+
+        $this->dispatch('open-confirm-modal');
+    }
+
+    public function confirmTolak($id)
+    {
+        $this->selectedId = $id;
+        $this->modalMessage = 'Apakah Anda yakin ingin menolak izin ini?';
+
+        $this->dispatch('open-confirm-modal');
+    }
+
+    public function proceedAction()
+    {
+        if (!$this->selectedId) return;
+
+        // contoh logika update
+        Absensi::where('id', $this->selectedId)
+            ->update(['status_kehadiran' => $this->modalMessage === 'Apakah Anda yakin ingin menolak izin ini?' ? 'Ditolak' : 'Disetujui']);
+
+        $this->closeModal();
+    }
+
+    public function closeModal()
+    {
+        $this->dispatch('close-confirm-modal');
     }
 
 

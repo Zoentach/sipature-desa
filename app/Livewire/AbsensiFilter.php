@@ -41,6 +41,12 @@ class AbsensiFilter extends Component
     }
 
     #[Computed()]
+    public function izins()
+    {
+        return Absensi::where('status_kehadiran', 'Pending')->count();
+    }
+
+    #[Computed()]
     public function absensi()
     {
         // --- Tentukan default tanggal ---

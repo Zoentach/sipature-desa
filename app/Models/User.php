@@ -45,4 +45,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function highestLevelRole()
+    {
+        return $this->roles()->orderBy('level')->first();
+    }
+
 }

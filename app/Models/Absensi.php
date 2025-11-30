@@ -32,7 +32,7 @@ class Absensi extends Model
 
     ];
 
-    protected $appends = ['nama_perangkat'];
+    protected $appends = ['nama_perangkat', 'nama_jabatan'];
 
     // Cast agar field seperti tanggal bisa diproses sebagai integer
     protected $casts = [
@@ -49,6 +49,11 @@ class Absensi extends Model
     public function getNamaPerangkatAttribute(): ?string
     {
         return $this->perangkat->nama ?? null;
+    }
+
+    public function getNamaJabatanAttribute(): ?string
+    {
+        return $this->perangkat->nama_jabatan ?? null;
     }
 
 

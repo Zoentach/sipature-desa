@@ -67,15 +67,15 @@
         </div>
         <div>
             <button type="button"
+                    onclick="window.location='{{ route('absensi.izin') }}'"
                     class="inline-flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700
-           focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-2.5 rounded">
+               focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-2.5 rounded">
                 Pengajuan Izin
                 <span class="inline-flex items-center justify-center w-5 h-5
                  rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-        2
+       {{ $this -> izins}}
     </span>
             </button>
-
         </div>
 
     </div>
@@ -92,6 +92,7 @@
                 <th scope="col" class="w-40 px-4 py-3 text-center">Pulang Cepat</th>
                 <th scope="col" class="w-40 px-4 py-3 text-center">Gambar Pagi</th>
                 <th scope="col" class="w-40 px-4 py-3 text-center">Gambar Sore</th>
+                <th scope="col" class="w-40 px-4 py-3 text-center">Keterangan</th>
             </tr>
             </thead>
             <tbody>
@@ -130,6 +131,17 @@
                     @else
                     <span class="text-gray-400">-</span>
                     @endif
+                </td>
+                @php
+                $statusColor = [
+                'Ditolak' => 'text-red-600 font-semibold',
+                'Pending' => 'text-yellow-600 font-semibold',
+                'Disetujui' => 'text-green-600 font-semibold',
+                ];
+                @endphp
+
+                <td class="w-40 px-4 py-4 text-center {{ $statusColor[$absensi->status_kehadiran] ?? '' }}">
+                    {{ $absensi->keterangan }}
                 </td>
             </tr>
             @empty

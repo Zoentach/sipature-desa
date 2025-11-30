@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\DesaController;
 use \App\Http\Controllers\PerangkatDesaController;
+use \App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('guest.welcome');
@@ -35,6 +36,10 @@ Route::view('dashboard', 'admin/perangkat/perangkat')
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/daftar-pengguna', [UserController::class, 'index'])->name('pengguna.index');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
