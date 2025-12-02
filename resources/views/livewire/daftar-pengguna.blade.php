@@ -25,10 +25,31 @@
                     </ul>
                 </div>
             </form>
+
+        </div>
+        <div>
+            <button type="button"
+                    onclick="window.location='{{ route('pengguna.tambah') }}'"
+                    class="inline-flex items-center gap-2 text-white
+           bg-blue-600 hover:bg-blue-700
+           focus:ring-4 focus:ring-blue-300
+           font-medium text-sm px-4 py-2.5
+           rounded-lg shadow-sm transition">
+
+                <svg class="w-4 h-4" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 4v16m8-8H4"/>
+                </svg>
+
+                Tambah Akun
+            </button>
         </div>
 
     </div>
-    <!-- Daftar Absensi -->
+    <!-- Daftar Pengguna -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -43,13 +64,13 @@
             </tr>
             </thead>
             <tbody>
-            <!--  @forelse($this->absensi as $absensi) -->
+            @forelse($this->daftarPengguna as $pengguna)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="w-40 px-4 py-4 text-center">
-                    Example_name
+                    {{ $pengguna->name }}
                 </td>
                 <td class="w-40 px-4 py-4 text-center">
-                    email@example.com
+                    {{ $pengguna->email }}
                 </td>
                 <td class="w-40 px-4 py-4 text-center">
                     Admin
@@ -59,23 +80,23 @@
                 </td>
                 <td class="px-4 py-4 text-center">
                     <!-- <button
-                         wire:click="confirmSetujui({{ $absensi->id }})"
+                         wire:click="confirmSetujui({{ $pengguna->id }})"
                          class="px-3 py-1 text-white bg-green-600 hover:bg-green-700 rounded ml-2">
                          Edit
                      </button> -->
 
                     <button
-                        wire:click="confirmTolak({{ $absensi->id }})"
+                        wire:click="confirmTolak({{ $pengguna->id }})"
                         class="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded ml-2">
                         Hapus
                     </button>
                 </td>
             </tr>
-            <!-- @empty
-             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                 <td colspan="7" class="px-auto py-4 text-center align-middle">Tidak ada data</td>
-             </tr>
-             @endforelse -->
+            @empty
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td colspan="7" class="px-auto py-4 text-center align-middle">Tidak ada data</td>
+            </tr>
+            @endforelse
             </tbody>
         </table>
     </div>

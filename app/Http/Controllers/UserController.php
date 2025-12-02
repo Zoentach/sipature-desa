@@ -14,4 +14,9 @@ class UserController extends Controller
     {
         return view('admin.pengguna.index');
     }
+
+    public function tambah()
+    {
+        return view('admin.pengguna.tambah');
+    }
 }

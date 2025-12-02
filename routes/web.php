@@ -41,6 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/daftar-pengguna', [UserController::class, 'index'])->name('pengguna.index');
 });
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/tambah-pengguna', [UserController::class, 'tambah'])->name('pengguna.tambah');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengajuan-izin', [AbsensiController::class, 'izin'])->name('absensi.izin');
