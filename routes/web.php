@@ -7,6 +7,7 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\DesaController;
 use \App\Http\Controllers\PerangkatDesaController;
 use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\PegawaiContorller;
 
 Route::get('/', function () {
     return view('guest.welcome');
@@ -58,6 +59,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/export/{kode_desa}', [ExportController::class, 'exportByDesa'])->name('export.kredensial');
+
+
+//umum
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/pegawai', [PegawaiContorller::class, 'index'])->name('umum.index');
+});
 
 
 require __DIR__ . '/auth.php';
