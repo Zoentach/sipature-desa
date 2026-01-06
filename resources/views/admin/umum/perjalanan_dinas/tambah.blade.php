@@ -69,7 +69,7 @@
                                value="{{ old('nomor_spt') }}"
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                    focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                               placeholder="090/SPT/I/2026">
+                               placeholder="800.1.11.1/XXX/2026">
                     </div>
 
                 </div>
@@ -92,31 +92,45 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">
                             Tanggal Berangkat
                         </label>
-                        <input type="date" name="tanggal_berangkat" required
-                               value="{{ old('tanggal_berangkat') }}"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                   focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <input
+                            type="date"
+                            id="tanggal_berangkat"
+                            name="tanggal_berangkat"
+                            required
+                            value="{{ old('tanggal_berangkat') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+               focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900">
                             Tanggal Kembali
                         </label>
-                        <input type="date" name="tanggal_kembali" required
-                               value="{{ old('tanggal_kembali') }}"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                   focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <input
+                            type="date"
+                            id="tanggal_kembali"
+                            name="tanggal_kembali"
+                            required
+                            value="{{ old('tanggal_kembali') }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+               focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
+
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-900">
                             Lama Hari
                         </label>
-                        <input type="number" name="lama_hari" min="1" required
+                        <input type="number"
+                               name="lama_hari"
+                               id="lama_hari"
+                               readonly
+                               required
                                value="{{ old('lama_hari') }}"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                   focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                               class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg
+                  block w-full p-2.5 cursor-not-allowed">
                     </div>
+
 
                 </div>
 
@@ -129,8 +143,7 @@
                     <select id="pegawaiSelect"
                             name="pegawai_ids[]"
                             multiple
-                            required
-                            class="hidden">
+                            required>
                         @foreach($pegawais as $pegawai)
                         <option value="{{ $pegawai->id }}"
                                 {{ collect(old(
@@ -182,3 +195,38 @@
     });
 </script>
 @endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const tglBerangkat = document.getElementById('tanggal_berangkat');
+        const tglKembali = document.getElementById('tanggal_kembali');
+        const lamaHari = document.getElementById('lama_hari');
+
+        function hitungLamaHari() {
+            if (!tglBerangkat.value || !tglKembali.value) {
+                lamaHari.value = '';
+                return;
+            }
+
+            const start = new Date(tglBerangkat.value);
+            const end = new Date(tglKembali.value);
+
+            if (end < start) {
+                lamaHari.value = '';
+                return;
+            }
+
+            lamaHari.value =
+                Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
+        }
+
+        tglBerangkat.addEventListener('change', hitungLamaHari);
+        tglKembali.addEventListener('change', hitungLamaHari);
+    });
+</script>
+@endpush
+
+
+

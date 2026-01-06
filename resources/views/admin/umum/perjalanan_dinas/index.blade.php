@@ -4,8 +4,6 @@
 
 @section('content')
 
-<a href="{{ route('perjalanan-dinas.tambah') }}">
-    tambah
-</>
+<livewire:perjalanandinas-filter/>
 
 @endsection

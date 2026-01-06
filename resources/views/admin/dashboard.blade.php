@@ -7,6 +7,7 @@
     <!-- Menyertakan CSS Flowbite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <livewire:styles/>
+    @stack('styles')
 </head>
 <body>
 
@@ -402,7 +403,9 @@
 
 <!-- Menyertakan JS Flowbite -->
 <livewire:scripts/>
-<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
+@stack('scripts')
 </html>

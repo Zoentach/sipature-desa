@@ -7,7 +7,7 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\DesaController;
 use \App\Http\Controllers\PerangkatDesaController;
 use \App\Http\Controllers\UserController;
-use \App\Http\Controllers\PegawaiContorller;
+use \App\Http\Controllers\PegawaiController;
 use \App\Http\Controllers\PerjalananDinasController;
 
 Route::get('/', function () {
@@ -35,6 +35,10 @@ Route::post('/perangkat', [PerangkatDesaController::class, 'store'])->name('pera
 Route::view('dashboard', 'admin/perangkat/perangkat')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+
+//guest - umum
+Route::get('/monitoring-spt', [PegawaiController::class, 'monitoring'])->name('umum.monitoring-spt');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
@@ -64,7 +68,7 @@ Route::get('/export/{kode_desa}', [ExportController::class, 'exportByDesa'])->na
 
 //umum
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/pegawai', [PegawaiContorller::class, 'index'])->name('umum.index');
+    Route::get('/pegawai', [PegawaiController::class, 'index'])->name('umum.index');
 });
 
 

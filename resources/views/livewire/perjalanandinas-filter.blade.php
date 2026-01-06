@@ -28,39 +28,50 @@
             </form>
         </div>
 
+        <a href="{{ route('perjalanan-dinas.tambah') }}"
+           class="inline-flex items-center px-4 py-2 text-sm font-medium
+          text-white bg-blue-600 rounded-lg
+          hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+            + Tambah
+        </a>
+
     </div>
-    <!-- Daftar Pegawai -->
+    <!-- Daftar Absensi -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="w-20  px-4 py-3 text-center">No</th>
-                <th scope="col" class="px-4 py-4 text-center">NIP</th>
-                <th scope="col" class="px-4 text-center">NAMA</th>
-                <th scope="col" class="px-4 text-center">PANGKAT/GOL</th>
-                <th scope="col" class="px-4 text-center">JABATAN</th>
+                <th scope="col" class="px-4 py-4 text-center">Pegawai</th>
+                <th scope="col" class="px-4 text-center">Tanggal Pelaksanaan</th>
+                <th scope="col" class="px-4 text-center">Maksud dan Tujuan</th>
+                <th scope="col" class="px-4 text-center">Jenis</th>
             </tr>
             </thead>
             <tbody>
-            @forelse($this->pegawais as $pegawai)
+            @forelse($this->perjalanans as $perjalanan)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="w-20 px-4 py-4 text-center">
                     {{ $loop->iteration }}
                 </td>
                 <td class="px-4 py-4 text-center">
-                    {{ $pegawai->nip}}
+                    @foreach($perjalanan->pegawais as $pegawai)
+                    <div>{{ $pegawai->nama }}</div>
+                    @endforeach
                 </td>
 
                 <td class="px-4 py-4 text-center">
-                    {{ $pegawai->nama }}
+                    {{ $perjalanan->tanggal_berangkat }} <br>
+                    s/d <br>
+                    {{ $perjalanan->tanggal_kembali }}
                 </td>
                 <td class="px-4 py-4 text-center">
-                    {{ $pegawai->golongan }}
-                </td>
-                <td class="px-4 py-4 text-center">
-                    {{ $pegawai->jabatan }}
+                    {{ $perjalanan->maksud_tujuan }}
                 </td>
 
+                <td class="px-4 py-4 text-center">
+                    {{ $perjalanan->jenisPerjalanan?->nama ?? '-' }}
+                </td>
             </tr>
             @empty
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
