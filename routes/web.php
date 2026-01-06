@@ -8,6 +8,7 @@ use App\Http\Controllers\DesaController;
 use \App\Http\Controllers\PerangkatDesaController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\PegawaiContorller;
+use \App\Http\Controllers\PerjalananDinasController;
 
 Route::get('/', function () {
     return view('guest.welcome');
@@ -66,5 +67,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pegawai', [PegawaiContorller::class, 'index'])->name('umum.index');
 });
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/perjalanan-dinas',
+        [PerjalananDinasController::class, 'index']
+    )->name('perjalanan-dinas.index');
+
+    Route::get('/perjalanan-dinas/tambah',
+        [PerjalananDinasController::class, 'tambah']
+    )->name('perjalanan-dinas.tambah');
+
+    Route::post('/perjalanan-dinas',
+        [PerjalananDinasController::class, 'store']
+    )->name('perjalanan-dinas.store');
+
+});
 
 require __DIR__ . '/auth.php';
