@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\RegulasiController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\DesaController;
@@ -68,17 +69,23 @@ Route::get('/export/{kode_desa}', [ExportController::class, 'exportByDesa'])->na
 
 //umum
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/pegawai', [PegawaiController::class, 'index'])->name('umum.index');
+
 });
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    Route::get('/pegawai', [PegawaiController::class, 'index'])->name('pegawai.index');
+
+    Route::get('/data-regulasi', [RegulasiController::class, 'index'])->name('regulasi.index');
+
+    Route::get('/tambah-regulasi', [RegulasiController::class, 'index'])->name('regulasi.tambah');
+
     Route::get('/perjalanan-dinas',
         [PerjalananDinasController::class, 'index']
     )->name('perjalanan-dinas.index');
 
-    Route::get('/perjalanan-dinas/tambah',
+    Route::get('/tambah-perjalanan-dinas',
         [PerjalananDinasController::class, 'tambah']
     )->name('perjalanan-dinas.tambah');
 
