@@ -43,6 +43,7 @@
             <tr>
                 <th scope="col" class="w-20  px-4 py-3 text-center">No</th>
                 <th scope="col" class="px-4 py-4 text-center">Pegawai</th>
+                <th scope="col" class="px-4 text-center">Nomor SPT</th>
                 <th scope="col" class="px-4 text-center">Tanggal Pelaksanaan</th>
                 <th scope="col" class="px-4 text-center">Maksud dan Tujuan</th>
                 <th scope="col" class="px-4 text-center">Jenis</th>
@@ -59,7 +60,9 @@
                     <div>{{ $pegawai->nama }}</div>
                     @endforeach
                 </td>
-
+                <td class="px-4 py-4 text-center">
+                    {{ $perjalanan->nomor_spt }}
+                </td>
                 <td class="px-4 py-4 text-center">
                     {{ $perjalanan->tanggal_berangkat }} <br>
                     s/d <br>

@@ -15,8 +15,9 @@
             <tr>
                 <th scope="col" class="w-20  px-4 py-3 text-center">No</th>
                 <th scope="col" class="px-4 text-center">Nama</th>
-                <th scope="col" class="px-4 text-center">Dalam Daerah</th>
-                <th scope="col" class="px-4 text-center">Luar Daerah</th>
+                <th scope="col" class="px-4 text-center">Bulanan (%)</th>
+                <th scope="col" class="px-4 text-center">Dalam Daerah <br> Tahun 2026</th>
+                <th scope="col" class="px-4 text-center">Luar Daerah <br> Tahun 2026</th>
                 <th scope="col" class="px-4 text-center">Total</th>
             </tr>
             </thead>
@@ -29,7 +30,9 @@
                 <td class="px-4 py-4 text-center">
                     {{ $pegawai->nama}}
                 </td>
-
+                <td class="px-4 py-4 text-center">
+                    {{ $pegawai->persenan}} %
+                </td>
                 <td class="px-4 py-4 text-center">
                     {{ $pegawai->dalam_daerah }}
                 </td>
@@ -49,6 +52,4 @@
         </table>
     </div>
 </div>
-
-
 @endsection
