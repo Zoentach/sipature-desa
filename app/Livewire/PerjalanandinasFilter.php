@@ -13,8 +13,7 @@ class PerjalanandinasFilter extends Component
     #[Computed()]
     public function perjalanans()
     {
-        $perjalananDinas = PerjalananDinas::with('pegawais', 'jenisPerjalanan')->get();
-
+        $perjalananDinas = PerjalananDinas::with('pegawais', 'jenisPerjalanan')->latest()->get();
 
         return $perjalananDinas;
     }
@@ -25,5 +24,5 @@ class PerjalanandinasFilter extends Component
     {
         return view('livewire.perjalanandinas-filter');
     }
-    
+
 }

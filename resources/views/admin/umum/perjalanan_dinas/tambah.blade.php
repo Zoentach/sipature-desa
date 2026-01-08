@@ -65,12 +65,16 @@
                         <label class="block mb-2 text-sm font-medium text-gray-900">
                             Nomor SPT
                         </label>
-                        <input type="text" name="nomor_spt" required
-                               value="{{ old('nomor_spt') }}"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                   focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                               placeholder="800.1.11.1/XXX/2026">
+                        <input
+                            type="text"
+                            name="nomor_spt"
+                            value="{{ old('nomor_spt', $nextNomor) }}"
+                            readonly
+                            required
+                            class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg
+               block w-full p-2.5 cursor-not-allowed">
                     </div>
+
 
                 </div>
 

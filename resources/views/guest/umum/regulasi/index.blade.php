@@ -12,7 +12,6 @@
     </p>
 </div>
 
-
 <livewire:regulasi-filter/>
 
 @endsection

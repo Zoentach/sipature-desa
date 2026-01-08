@@ -103,4 +103,5 @@ class PerangkatDesaController extends Controller
             ->route('perangkat_desa.create')
             ->with('success', 'Data perangkat desa berhasil disimpan!');
     }
+
 }

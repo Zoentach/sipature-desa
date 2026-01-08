@@ -33,11 +33,42 @@ class PerjalananDinasController extends Controller
         $pegawais = Pegawai::orderBy('nama')->get();
         $jenisPerjalanan = JenisPerjalanan::all();
 
+        // ambil data perjalanan terakhir
+        $last = PerjalananDinas::orderByDesc('id')->first();
+
+        // default awal
+        $nextNomor = '800.1.11.1/01/' . date('Y');
+
+        if ($last && $last->nomor_spt) {
+
+            // contoh: 800.1.11.1/09/2026
+            $parts = explode('/', $last->nomor_spt);
+
+            if (count($parts) === 3) {
+                $kode = $parts[0];          // 800.1.11.1
+                $urut = (int)$parts[1];    // 9
+                $tahun = $parts[2];          // 2026
+
+                if ($tahun == date('Y')) {
+                    $urut++;
+                } else {
+                    $urut = 1;
+                    $tahun = date('Y');
+                }
+
+                $nextNomor = $kode . '/'
+                    . str_pad($urut, 2, '0', STR_PAD_LEFT)
+                    . '/' . $tahun;
+            }
+        }
+
         return view('admin.umum.perjalanan_dinas.tambah', compact(
             'pegawais',
-            'jenisPerjalanan'
+            'jenisPerjalanan',
+            'nextNomor'
         ));
     }
+
 
     /**
      * Simpan data perjalanan dinas baru
