@@ -79,7 +79,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/data-regulasi', [RegulasiController::class, 'index'])->name('regulasi.index');
 
-    Route::get('/tambah-regulasi', [RegulasiController::class, 'index'])->name('regulasi.tambah');
+    Route::get('/tambah-regulasi', [RegulasiController::class, 'tambah'])->name('regulasi.tambah');
+
+    Route::post('/data-regulasi', [RegulasiController::class, 'store'])->name('regulasi.store');
 
     Route::get('/perjalanan-dinas',
         [PerjalananDinasController::class, 'index']
