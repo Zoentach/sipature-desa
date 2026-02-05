@@ -3,10 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
-use App\Models\PerangkatDesa;
-use App\Models\Absensi;
-use App\Models\VerifikasiAbsensi;
-use Illuminate\Http\Request;
 
 class PegawaiController extends Controller
 {
