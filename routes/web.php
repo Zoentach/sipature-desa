@@ -83,18 +83,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/data-regulasi', [RegulasiController::class, 'store'])->name('regulasi.store');
 
-    Route::get('/perjalanan-dinas',
-        [PerjalananDinasController::class, 'index']
-    )->name('perjalanan-dinas.index');
+    Route::prefix('perjalanan-dinas')->name('perjalanan-dinas.')->group(function () {
+        // Menampilkan daftar
+        Route::get('/', [PerjalananDinasController::class, 'index'])->name('index');
 
-    Route::get('/tambah-perjalanan-dinas',
-        [PerjalananDinasController::class, 'tambah']
-    )->name('perjalanan-dinas.tambah');
+        // Menampilkan form tambah
+        Route::get('/tambah', [PerjalananDinasController::class, 'tambah'])->name('tambah');
 
-    Route::post('/perjalanan-dinas',
-        [PerjalananDinasController::class, 'store']
-    )->name('perjalanan-dinas.store');
+        // Simpan data baru
+        Route::post('/', [PerjalananDinasController::class, 'store'])->name('store');
 
+        // Menampilkan form edit (NEW)
+        Route::get('/{id}/ubah', [PerjalananDinasController::class, 'edit'])->name('edit');
+
+        // Update data (NEW)
+        Route::put('/{id}', [PerjalananDinasController::class, 'update'])->name('update');
+
+        // Hapus data
+        Route::delete('/{id}', [PerjalananDinasController::class, 'destroy'])->name('destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';

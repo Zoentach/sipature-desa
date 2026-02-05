@@ -107,22 +107,22 @@ class PerjalananDinasController extends Controller
     /**
      * Tampilkan form edit (tetap pakai index.php)
      */
+    /**
+     * Tampilkan form edit
+     */
     public function edit($id)
     {
-        $editData = PerjalananDinas::with('pegawais')->findOrFail($id);
-
-        $perjalananDinas = PerjalananDinas::with(['pegawais', 'jenisPerjalanan'])
-            ->latest()
-            ->get();
+        // Mengambil data perjalanan beserta relasi pegawai (untuk auto-select nanti)
+        $perjalanan = PerjalananDinas::with('pegawais')->findOrFail($id);
 
         $pegawais = Pegawai::orderBy('nama')->get();
         $jenisPerjalanan = JenisPerjalanan::all();
 
-        return view('perjalanan_dinas.index', compact(
-            'perjalananDinas',
+        // Arahkan ke file view edit yang terpisah agar lebih bersih
+        return view('admin.umum.perjalanan_dinas.edit', compact(
+            'perjalanan',
             'pegawais',
-            'jenisPerjalanan',
-            'editData'
+            'jenisPerjalanan'
         ));
     }
 
@@ -131,20 +131,30 @@ class PerjalananDinasController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validasi
         $request->validate([
             'jenis_perjalanan_id' => 'required|exists:jenis_perjalanan,id',
-            'nomor_spt' => 'required|string|max:100',
+            // Validasi unik nomor SPT, tapi kecualikan ID yang sedang diedit ini
+            'nomor_spt' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('perjalanan_dinas', 'nomor_spt')->ignore($id)
+            ],
             'maksud_tujuan' => 'required|string',
             'tanggal_berangkat' => 'required|date',
             'tanggal_kembali' => 'required|date|after_or_equal:tanggal_berangkat',
             'lama_hari' => 'required|integer|min:1',
+            'status' => 'required|in:draft,disetujui,selesai',
+
+            // Validasi Array Pegawai
             'pegawai_ids' => 'required|array|min:1',
             'pegawai_ids.*' => 'exists:pegawai,id',
-            'status' => 'required|in:draft,disetujui,selesai',
         ]);
 
         $perjalanan = PerjalananDinas::findOrFail($id);
 
+        // Update data utama
         $perjalanan->update([
             'jenis_perjalanan_id' => $request->jenis_perjalanan_id,
             'nomor_spt' => $request->nomor_spt,
@@ -155,12 +165,12 @@ class PerjalananDinasController extends Controller
             'status' => $request->status,
         ]);
 
-        // sync pegawai (hapus & tambah otomatis)
+        // Sync Pegawai (Penting: sync() akan menghapus yang tidak dicentang dan menambah yang baru)
         $perjalanan->pegawais()->sync($request->pegawai_ids);
 
         return redirect()
             ->route('perjalanan-dinas.index')
-            ->with('success', 'Perjalanan dinas berhasil diperbarui');
+            ->with('success', 'Data perjalanan dinas berhasil diperbarui.');
     }
 
     /**

@@ -1,7 +1,5 @@
 <div>
-    <!-- Filter -->
     <div class="mb-6 flex flex-wrap gap-4 items-end">
-
         <div>
             <form class="mx-auto" autocomplete="off">
                 <label for="default-search"
@@ -34,19 +32,20 @@
           hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
             + Tambah
         </a>
-
     </div>
-    <!-- Daftar Absensi -->
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="w-20  px-4 py-3 text-center">No</th>
+                <th scope="col" class="w-20 px-4 py-3 text-center">No</th>
                 <th scope="col" class="px-4 py-4 text-center">Pegawai</th>
                 <th scope="col" class="px-4 text-center">Nomor SPT</th>
                 <th scope="col" class="px-4 text-center">Tanggal Pelaksanaan</th>
                 <th scope="col" class="px-4 text-center">Maksud dan Tujuan</th>
                 <th scope="col" class="px-4 text-center">Jenis</th>
+                {{-- [BARU] Header Kolom Aksi --}}
+                <th scope="col" class="px-4 text-center">Aksi</th>
             </tr>
             </thead>
             <tbody>
@@ -57,13 +56,13 @@
                 </td>
                 <td class="px-4 py-4 text-center">
                     @foreach($perjalanan->pegawais as $pegawai)
-                    <div>{{ $pegawai->nama }}</div>
+                    <div class="whitespace-nowrap">{{ $pegawai->nama }}</div>
                     @endforeach
                 </td>
                 <td class="px-4 py-4 text-center">
                     {{ $perjalanan->nomor_spt }}
                 </td>
-                <td class="px-4 py-4 text-center">
+                <td class="px-4 py-4 text-center min-w-[150px]">
                     {{ $perjalanan->tanggal_berangkat }} <br>
                     s/d <br>
                     {{ $perjalanan->tanggal_kembali }}
@@ -71,13 +70,32 @@
                 <td class="px-4 py-4 text-center">
                     {{ $perjalanan->maksud_tujuan }}
                 </td>
-
                 <td class="px-4 py-4 text-center">
                     {{ $perjalanan->jenisPerjalanan?->nama ?? '-' }}
+                </td>
+
+                {{-- [BARU] Tombol Edit --}}
+                <td class="px-4 py-4 text-center">
+                    <a href="{{ route('perjalanan-dinas.edit', $perjalanan->id) }}"
+                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        Ubah
+                    </a>
+
+                    {{-- Opsi: Jika ingin menambahkan tombol Hapus di sebelah Ubah --}}
+                    {{--
+                    <form action="{{ route('perjalanan-dinas.destroy', $perjalanan->id) }}" method="POST"
+                          class="inline-block ml-2" onsubmit="return confirm('Yakin ingin menghapus?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Hapus
+                        </button>
+                    </form>
+                    --}}
                 </td>
             </tr>
             @empty
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                {{-- Update colspan jadi 7 karena ada kolom baru --}}
                 <td colspan="7" class="px-auto py-4 text-center align-middle">Tidak ada data</td>
             </tr>
             @endforelse
@@ -85,7 +103,3 @@
         </table>
     </div>
 </div>
-
-
-
-
