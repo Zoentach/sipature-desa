@@ -34,13 +34,13 @@
                     {{ $pegawai->persenan}} %
                 </td>
                 <td class="px-4 py-4 text-center">
-                    {{ $pegawai->dalam_daerah }}
+                    {{ $pegawai->dalam_daerah_hari ?? 0 }}
                 </td>
                 <td class="px-4 py-4 text-center">
-                    {{ $pegawai->luar_daerah }}
+                    {{ $pegawai->luar_daerah_hari ?? 0 }}
                 </td>
                 <td class="px-4 py-4 text-center">
-                    {{ $pegawai->total_perjalanan }}
+                    {{ $pegawai->total_hari ?? 0 }}
                 </td>
             </tr>
             @empty

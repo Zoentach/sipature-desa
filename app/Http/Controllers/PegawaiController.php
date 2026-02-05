@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
+<<<<<<< HEAD
+=======
+use App\Models\PerangkatDesa;
+use App\Models\Absensi;
+use App\Models\VerifikasiAbsensi;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+>>>>>>> 3e2a3e3ceaf7c3145f1266c2acb7b47f5d1f4085
 
 class PegawaiController extends Controller
 {
@@ -52,35 +60,89 @@ class PegawaiController extends Controller
 ";
 
 
-        $pegawais = Pegawai::withCount([
+//        $pegawais = Pegawai::withCount([
+//
+//            //total semua perjalanan
+//            'perjalananDinas as total_perjalanan',
+//
+//            //dalam daerah
+//            'perjalananDinas as dalam_daerah' => function ($q) {
+//                $q->where('jenis_perjalanan_id', 1);
+//            },
+//
+//            //luar daerah
+//            'perjalananDinas as luar_daerah' => function ($q) {
+//                $q->where('jenis_perjalanan_id', 2);
+//            },
+//
+//            //perjalanan BULAN INI
+//            'perjalananDinas as bulan_ini' => function ($q) {
+//                $q->whereMonth('tanggal_berangkat', now()->month)
+//                    ->whereYear('tanggal_berangkat', now()->year);
+//            },
+//        ])
+//            ->orderByRaw($orderByCustom)
+//            ->get();
 
-            //total semua perjalanan
-            'perjalananDinas as total_perjalanan',
 
-            //dalam daerah
-            'perjalananDinas as dalam_daerah' => function ($q) {
-                $q->where('jenis_perjalanan_id', 1);
-            },
+        $pegawais = Pegawai::query()
+            ->select('pegawai.*')
 
-            //luar daerah
-            'perjalananDinas as luar_daerah' => function ($q) {
-                $q->where('jenis_perjalanan_id', 2);
-            },
+            // TOTAL HARI
+            ->selectSub(function ($q) {
+                $q->from('perjalanan_dinas')
+                    ->join('perjalanan_dinas_pegawai', 'perjalanan_dinas.id', '=', 'perjalanan_dinas_pegawai.perjalanan_dinas_id')
+                    ->whereColumn('perjalanan_dinas_pegawai.pegawai_id', 'pegawai.id')
+                    ->selectRaw('COALESCE(SUM(perjalanan_dinas.lama_hari), 0)');
+            }, 'total_hari')
 
-            //perjalanan BULAN INI
-            'perjalananDinas as bulan_ini' => function ($q) {
-                $q->whereMonth('tanggal_berangkat', now()->month)
-                    ->whereYear('tanggal_berangkat', now()->year);
-            },
-        ])
+            // DALAM DAERAH
+            ->selectSub(function ($q) {
+                $q->from('perjalanan_dinas')
+                    ->join('perjalanan_dinas_pegawai', 'perjalanan_dinas.id', '=', 'perjalanan_dinas_pegawai.perjalanan_dinas_id')
+                    ->whereColumn('perjalanan_dinas_pegawai.pegawai_id', 'pegawai.id')
+                    ->where('perjalanan_dinas.jenis_perjalanan_id', 1)
+                    ->selectRaw('COALESCE(SUM(perjalanan_dinas.lama_hari), 0)');
+            }, 'dalam_daerah_hari')
+
+            // LUAR DAERAH
+            ->selectSub(function ($q) {
+                $q->from('perjalanan_dinas')
+                    ->join('perjalanan_dinas_pegawai', 'perjalanan_dinas.id', '=', 'perjalanan_dinas_pegawai.perjalanan_dinas_id')
+                    ->whereColumn('perjalanan_dinas_pegawai.pegawai_id', 'pegawai.id')
+                    ->where('perjalanan_dinas.jenis_perjalanan_id', 2)
+                    ->selectRaw('COALESCE(SUM(perjalanan_dinas.lama_hari), 0)');
+            }, 'luar_daerah_hari')
+
+            // BULAN INI
+            ->selectSub(function ($q) {
+                $q->from('perjalanan_dinas')
+                    ->join(
+                        'perjalanan_dinas_pegawai',
+                        'perjalanan_dinas.id',
+                        '=',
+                        'perjalanan_dinas_pegawai.perjalanan_dinas_id'
+                    )
+                    ->whereColumn(
+                        'perjalanan_dinas_pegawai.pegawai_id',
+                        'pegawai.id'
+                    )
+                    ->whereMonth('perjalanan_dinas.tanggal_berangkat', now()->month)
+                    ->whereYear('perjalanan_dinas.tanggal_berangkat', now()->year)
+                    ->selectRaw('COALESCE(SUM(perjalanan_dinas.lama_hari), 0)');
+            }, 'bulan_ini_hari')
+
+            // ORDER CUSTOM TETAP JALAN
             ->orderByRaw($orderByCustom)
             ->get();
+
+        // BULAN INI
 
 
         //hitung persentase bulanan
         $pegawais->each(function ($pegawai) use ($targetBulanan) {
             $pegawai->persenan = min(
-                round(($pegawai->bulan_ini / $targetBulanan) * 100, 2),
+                round(($pegawai->bulan_ini_hari / $targetBulanan) * 100, 2),
                 100
             );
         });
