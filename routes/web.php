@@ -12,8 +12,12 @@ use \App\Http\Controllers\PegawaiController;
 use \App\Http\Controllers\PerjalananDinasController;
 
 Route::get('/', function () {
-    return view('guest.welcome');
-})->name('home');
+    return view('guest.beranda');
+})->name('beranda');
+
+Route::get('/tentang-kami', function () {
+    return view('guest.tentang.tentang');
+})->name('tentang');
 
 #DESA CONTROLLER
 Route::get('/search', [DesaController::class, 'search'])->name('search');
