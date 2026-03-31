@@ -1,4 +1,4 @@
-@extends('guest.layouts.app')
+@extends('guest.app')
 
 @section('content')
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg sm:m-8 md:m-16 lg:mx-72 m-2">

@@ -25,7 +25,7 @@ class Desa extends Model
     public function kepalaDesa()
     {
         return $this->hasOne(PerangkatDesa::class, 'kode_desa', 'kode_desa')
-            ->where('jabatan', 'Kepala Desa');
+            ->where('kode_jabatan', 'PD01');
     }
 
     public function perangkatDesa()

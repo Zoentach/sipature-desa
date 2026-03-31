@@ -11,6 +11,11 @@ export default defineConfig({
         // tailwindcss(),
     ],
     server: {
-        cors: true,
+        host: '0.0.0.0',
+        port: 5174, // Paksa ke 5174 agar konsisten dengan terminal Anda
+        strictPort: true,
+        hmr: {
+            host: '192.168.1.6', // Alamat IP komputer Anda
+        },
     },
 });
