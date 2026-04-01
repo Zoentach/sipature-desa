@@ -28,6 +28,12 @@ class Desa extends Model
             ->where('kode_jabatan', 'PD01');
     }
 
+    public function indeksDesa($tahun = 2016)
+    {
+        return $this->hasOne(IndeksDesa::class, 'kode_desa', 'kode_desa')
+            ->latestOfMany('tahun');
+    }
+
     public function perangkatDesa()
     {
         return $this->hasMany(PerangkatDesa::class, 'kode_desa', 'kode_desa');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use App\Models\Desa;
 use App\Models\PerangkatDesa;
@@ -13,12 +14,19 @@ class DesaController extends Controller
      */
     public function getAll()
     {
-        // Jika datanya banyak, gunakan pagination (opsional)
-        $desas = Desa::with('kepalaDesa')
+        $desas = Desa::with(['kepalaDesa', 'indeksDesa']) // Ambil relasi sekaligus
+        ->when(request('search'), function ($query) {
+            $query->where('nama', 'like', '%' . request('search') . '%');
+        })
+            ->when(request('kecamatan'), function ($query) {
+                $query->where('kode_kecamatan', request('kecamatan'));
+            })
             ->orderBy('nama')
             ->paginate(20);
 
-        return view('guest.desa.daftar_desa', compact('desas'));
+        $kecamatans = Kecamatan::all();
+
+        return view('guest.desa.daftar_desa', compact('desas', 'kecamatans'));
     }
 
     /**

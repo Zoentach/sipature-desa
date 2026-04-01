@@ -54,10 +54,10 @@
                     </div>
 
                     <!-- TITLE -->
-                    <h3 class="text-center font-semibold text-sm mb-2">Desa Mandiri</h3>
+                    <h3 class="text-center font-semibold text-sm mb-2">Jumlah Desa</h3>
 
                     <!-- TOTAL -->
-                    <p class="text-center text-2xl font-bold text-blue-700 mb-3">50</p>
+                    <p class="text-center text-2xl font-bold text-blue-700 mb-3">211</p>
 
                     <!-- ACTION -->
                     <p class="text-center text-sm text-blue-600 font-medium hover:underline">
