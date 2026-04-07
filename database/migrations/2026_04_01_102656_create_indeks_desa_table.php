@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->decimal('skor_ike', 5, 4)->comment('Indeks Ketahanan Ekonomi');
             $table->decimal('skor_ikl', 5, 4)->comment('Indeks Ketahanan Lingkungan');
 
-            // Hasil Akhir
+            // Hasil Akhir 
             $table->decimal('skor_idm', 5, 4)->comment('Nilai Total IDM');
             $table->enum('status_desa', [
                 'Sangat Tertinggal',
