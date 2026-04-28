@@ -2,22 +2,20 @@
 
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\PerangkatDesaController;
+use App\Http\Controllers\Api\PerjalananDinasApiController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\VerifikasiAbsensiController;
 use App\Models\Desa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VerifikasiAbsensiController;
 
 Route::get('/test', function () {
     return 'API OK';
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::middleware('auth:sanctum')->get('/perangkat-desa', [PerangkatDesaController::class, 'getPerangkatDesa']);
-
-// Login API - tanpa device_name
+// ==========================================
+// API LOGIN 1 (VERSI LAMA)
+// ==========================================
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
@@ -41,29 +39,14 @@ Route::post('/sanctum/token', function (Request $request) {
     ]);
 });
 
+// ==========================================
+// API LOGIN 2 (VERSI BARU VIA CONTROLLER)
+// ==========================================
+Route::post('/login', [AuthController::class, 'login']);
 
-//verikasi absensi
-Route::middleware('auth:sanctum')->post('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'store']);
-Route::middleware('auth:sanctum')->get('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'getVerifikasiAbsensi']);
-
-Route::middleware('auth:sanctum')->post('/absensi', [AbsensiController::class, 'store']);
-Route::middleware('auth:sanctum')->post('/absensi/lampiran', [AbsensiController::class, 'storeLampiran']);
-
-Route::middleware('auth:sanctum')->post('/user/update-mac', function (Request $request) {
-    $request->validate([
-        'mac_address' => ['required', 'string'],
-    ]);
-
-    $user = $request->user();
-    $user->mac_address = $request->mac_address;
-    $user->save();
-
-    return response()->json([
-        'message' => 'MAC address uptanggald successfully.',
-        'mac_address' => $user->mac_address,
-    ]);
-});
-
+// ==========================================
+// API PUBLIK LAINNYA
+// ==========================================
 Route::get('/desas', function (Request $request) {
     $kodeKec = $request->get('kode_kecamatan');
 
@@ -75,8 +58,52 @@ Route::get('/desas', function (Request $request) {
 
     return response()->json(
         $desas->map(fn($desa) => [
-            'id' => $desa->id,    // langsung pakai id
-            'nama' => $desa->nama,  // disamakan dengan JS
+            'id' => $desa->id,
+            'nama' => $desa->nama,
         ])
     );
+});
+
+// ==========================================
+// ROUTE YANG WAJIB LOGIN (AUTH:SANCTUM)
+// ==========================================
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Profil User
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // Perangkat Desa
+    Route::get('/perangkat-desa', [PerangkatDesaController::class, 'getPerangkatDesa']);
+
+    // Verifikasi Absensi
+    Route::post('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'store']);
+    Route::get('/verifikasi-absensi', [VerifikasiAbsensiController::class, 'getVerifikasiAbsensi']);
+
+    // Absensi
+    Route::post('/absensi', [AbsensiController::class, 'store']);
+    Route::post('/absensi/lampiran', [AbsensiController::class, 'storeLampiran']);
+
+    // Update MAC Address
+    Route::post('/user/update-mac', function (Request $request) {
+        $request->validate([
+            'mac_address' => ['required', 'string'],
+        ]);
+
+        $user = $request->user();
+        $user->mac_address = $request->mac_address;
+        $user->save();
+
+        return response()->json([
+            'message' => 'MAC address updated successfully.',
+            'mac_address' => $user->mac_address,
+        ]);
+    });
+
+    // ==========================================
+    // ROUTE CRUD PERJALANAN DINAS
+    // ==========================================
+    Route::apiResource('perjalanan-dinas', PerjalananDinasApiController::class)->except(['show']);
+
 });
