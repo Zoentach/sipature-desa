@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\Api\PegawaiApiController;
 use App\Http\Controllers\PerangkatDesaController;
 use App\Http\Controllers\Api\PerjalananDinasApiController;
 use App\Http\Controllers\Api\AuthController;
@@ -105,5 +106,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // ROUTE CRUD PERJALANAN DINAS
     // ==========================================
     Route::apiResource('perjalanan-dinas', PerjalananDinasApiController::class)->except(['show']);
+
+    // ==========================================
+    // ROUTE CRUD PEGAWAI
+    // ==========================================
+    Route::apiResource('pegawai', PegawaiApiController::class)->except(['show']);
 
 });
