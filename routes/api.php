@@ -105,11 +105,15 @@ Route::middleware('auth:sanctum')->group(function () {
     // ==========================================
     // ROUTE CRUD PERJALANAN DINAS
     // ==========================================
-    Route::apiResource('perjalanan-dinas', PerjalananDinasApiController::class)->except(['show']);
+    Route::apiResource('perjalanan-dinas', PerjalananDinasApiController::class)
+        ->except(['show'])
+        ->names('api.perjalanan-dinas');
 
     // ==========================================
     // ROUTE CRUD PEGAWAI
     // ==========================================
-    Route::apiResource('pegawai', PegawaiApiController::class)->except(['show']);
+    Route::apiResource('pegawai', PegawaiApiController::class)
+        ->except(['show'])
+        ->names('api.pegawai');
 
 });

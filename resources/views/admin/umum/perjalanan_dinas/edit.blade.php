@@ -1,4 +1,4 @@
-@extends('guest.layouts.app') {{-- Sesuaikan dengan layout admin Anda --}}
+@extends('admin.dashboard')
 
 @section('content')
 <div
