@@ -32,4 +32,9 @@ class PerjalananDinas extends Model
         return $this->belongsTo(JenisPerjalanan::class);
     }
 
+    public function hasilEvaluasi()
+    {
+        return $this->hasMany(HasilEvaluasi::class, 'perjalanan_dinas_id');
+    }
+
 }

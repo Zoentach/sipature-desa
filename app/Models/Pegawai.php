@@ -47,4 +47,17 @@ class Pegawai extends Model
             'perjalanan_dinas_pegawai'
         );
     }
+
+    public function user()
+    {
+        // Pegawai ini milik (berelasi dengan) satu User
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+// Mengetahui pegawai ini sudah melakukan evaluasi ke desa mana saja
+    public function hasilEvaluasi()
+    {
+        return $this->hasMany(HasilEvaluasi::class, 'pegawai_id');
+    }
+    
 }

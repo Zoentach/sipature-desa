@@ -9,6 +9,12 @@ return new class extends Migration {
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
             $table->string('nip')->unique();
             $table->string('nama');
             $table->string('jabatan');

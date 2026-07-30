@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\IndeksDesaController;
 use App\Http\Controllers\RegulasiController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -76,6 +77,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
+Route::get('/indeks-desa', [IndeksDesaController::class, 'index'])->name('indeks-desa.index');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -106,6 +109,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Hapus data
         Route::delete('/{id}', [PerjalananDinasController::class, 'destroy'])->name('destroy');
     });
+
+    // Tampilan list data khusus admin
+    Route::get('/admin/indeks-desa', [IndeksDesaController::class, 'adminIndex'])->name('indeks-desa.admin_index');
+
+    // Import, Edit, Update
+    Route::post('/admin/indeks-desa/import', [IndeksDesaController::class, 'import'])->name('indeks-desa.import');
+    Route::get('/admin/indeks-desa/{indeksDesa}/edit', [IndeksDesaController::class, 'edit'])->name('indeks-desa.edit');
+    Route::put('/admin/indeks-desa/{indeksDesa}', [IndeksDesaController::class, 'update'])->name('indeks-desa.update');
 });
+
 
 require __DIR__ . '/auth.php';

@@ -56,4 +56,10 @@ class User extends Authenticatable
     {
         return $this->roles()->orderBy('level')->first();
     }
+
+    public function pegawai()
+    {
+        // User memiliki satu profil pegawai
+        return $this->hasOne(Pegawai::class, 'user_id');
+    }
 }

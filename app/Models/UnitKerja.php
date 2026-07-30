@@ -27,4 +27,10 @@ class UnitKerja extends Model
     {
         return $this->hasMany(Pegawai::class, 'unit_kerja_id');
     }
+
+// Menarik daftar Kelompok Instrumen (Pemerintahan, Ekonomi, dll)
+    public function kelompokInstrumen()
+    {
+        return $this->hasMany(KelompokInstrumen::class, 'unit_kerja_id');
+    }
 }
