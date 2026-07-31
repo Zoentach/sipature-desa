@@ -22,7 +22,10 @@ class EvaluasiController extends Controller
             $q->orderBy('urutan', 'asc')->with(['instrumenEvaluasi' => function ($q2) {
                 $q2->where('is_active', true)->orderBy('urutan', 'asc');
             }]);
-        }])->orderBy('id', 'asc')->get();
+        }])
+            ->whereNotIn('id', [1, 2, 3])
+            ->orderBy('id', 'asc')
+            ->get();
 
         $formattedData = $instrumen->map(function ($unit) {
             return [
