@@ -20,31 +20,26 @@ class RiwayatTugasController extends Controller
             ], 404);
         }
 
-// 1. Tangkap parameter filter dari URL (jika ada)
-        $startDate = $request->query('start_date');
-        $endDate = $request->query('end_date');
+// 1. Tangkap parameter (gunakan input() agar bisa membaca dari query string maupun body request)
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
 
-// 2. Mulai menyusun Query
+        // 2. Mulai menyusun Query
         $query = PerjalananDinas::whereHas('pegawais', function ($q) use ($pegawai) {
             $q->where('pegawai.id', $pegawai->id);
-        })
-            ->whereHas('hasilEvaluasi', function ($q) {
-                $q->where('status', 'SELESAI');
-            });
+        });
 
-// 3. Logika Filter Tanggal (Dinamis)
+        // 3. Logika Filter Tanggal menggunakan whereDate (Aman untuk tipe data Date maupun DateTime)
         if ($startDate && $endDate) {
-// Jika Android mengirimkan tanggal mulai dan tanggal akhir
-            $query->whereBetween('tanggal_berangkat', [$startDate, $endDate]);
+            $query->whereDate('tanggal_berangkat', '>=', $startDate)
+                ->whereDate('tanggal_berangkat', '<=', $endDate);
         } elseif ($startDate) {
-// Jika hanya mengirimkan tanggal mulai
-            $query->where('tanggal_berangkat', '>=', $startDate);
+            $query->whereDate('tanggal_berangkat', '>=', $startDate);
         } elseif ($endDate) {
-// Jika hanya mengirimkan tanggal akhir
-            $query->where('tanggal_berangkat', '<=', $endDate);
+            $query->whereDate('tanggal_berangkat', '<=', $endDate);
         }
 
-// 4. Eksekusi query dengan urutan terbaru
+        // 4. Eksekusi query dengan urutan terbaru
         $riwayatTugas = $query->orderBy('tanggal_berangkat', 'desc')->get();
 
 // 5. Mapping Data
