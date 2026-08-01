@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Desa;
 use App\Models\HasilEvaluasi;
 use App\Models\DetailHasilEvaluasi;
+use App\Traits\HasKecamatan;
 use Illuminate\Http\Request;
 
 class ProfilDesaController extends Controller
 {
+    use HasKecamatan;
+
     public function show($id)
     {
+
+
         // 1. Ambil Data Master Desa beserta Relasi Kepala Desa & Indeks
         $desa = Desa::with(['kepalaDesa', 'indeksDesa'])->find($id);
 
@@ -95,16 +100,5 @@ class ProfilDesaController extends Controller
                 'riwayatList' => $riwayatList
             ]
         ], 200);
-    }
-
-    private function getNamaKecamatan($kode)
-    {
-        $daftarKecamatan = [
-            '127101' => 'Sipirok',
-            '127102' => 'Angkola Timur',
-            '127103' => 'Arse',
-            '127104' => 'Saipar Dolok Hole'
-        ];
-        return $daftarKecamatan[$kode] ?? 'Kecamatan Tidak Diketahui';
     }
 }
