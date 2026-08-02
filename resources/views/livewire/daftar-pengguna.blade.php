@@ -1,6 +1,6 @@
 <div>
     <!-- Filter -->
-    <div class="mb-6 flex flex-wrap gap-4 items-end">
+    <div class="mb-6 flex flex-wrap gap-4 items-end justify-between">
         <div>
             <form class="mx-auto" autocomplete="off">
                 <label for="default-search"
@@ -25,17 +25,18 @@
                     </ul>
                 </div>
             </form>
-
         </div>
-        <div>
+
+        <!-- Tombol Aksi (Tambah & Import) -->
+        <div class="flex gap-2">
+            <!-- Tombol Tambah Akun -->
             <button type="button"
                     onclick="window.location='{{ route('pengguna.tambah') }}'"
                     class="inline-flex items-center gap-2 text-white
-           bg-blue-600 hover:bg-blue-700
-           focus:ring-4 focus:ring-blue-300
-           font-medium text-sm px-4 py-2.5
-           rounded-lg shadow-sm transition">
-
+                    bg-blue-600 hover:bg-blue-700
+                    focus:ring-4 focus:ring-blue-300
+                    font-medium text-sm px-4 py-2.5
+                    rounded-lg shadow-sm transition">
                 <svg class="w-4 h-4" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg"
                      fill="none" viewBox="0 0 24 24">
@@ -43,12 +44,29 @@
                           stroke-linecap="round" stroke-linejoin="round"
                           d="M12 4v16m8-8H4"/>
                 </svg>
-
                 Tambah Akun
             </button>
-        </div>
 
+            <!-- Tombol Import CSV -->
+            <button type="button"
+                    onclick="window.location='{{ route('pengguna.import') }}'"
+                    class="inline-flex items-center gap-2 text-white
+                    bg-green-600 hover:bg-green-700
+                    focus:ring-4 focus:ring-green-300
+                    font-medium text-sm px-4 py-2.5
+                    rounded-lg shadow-sm transition">
+                <svg class="w-4 h-4" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                Import CSV
+            </button>
+        </div>
     </div>
+
     <!-- Daftar Pengguna -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -56,9 +74,7 @@
             <tr>
                 <th scope="col" class="px-4 py-3 text-center">Nama</th>
                 <th scope="col" class="px-4 py-3 text-center">Email</th>
-                <!--   <th scope="col" class="px-4 py-3 text-center">Pagi</th> -->
                 <th scope="col" class="w-40 px-4 py-3 text-center">Peran</th>
-                <!--  <th scope="col" class="px-4 py-3 text-center">Sore</th> -->
                 <th scope="col" class="w-40 px-4 py-3 text-center">Status</th>
                 <th scope="col" class="w-40 px-4 py-3 text-center">Aksi</th>
             </tr>
@@ -79,12 +95,6 @@
                     Aktif
                 </td>
                 <td class="px-4 py-4 text-center">
-                    <!-- <button
-                         wire:click="confirmSetujui({{ $pengguna->id }})"
-                         class="px-3 py-1 text-white bg-green-600 hover:bg-green-700 rounded ml-2">
-                         Edit
-                     </button> -->
-
                     <button
                         wire:click="confirmTolak({{ $pengguna->id }})"
                         class="px-3 py-1 text-white bg-red-600 hover:bg-red-700 rounded ml-2">
@@ -94,7 +104,7 @@
             </tr>
             @empty
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td colspan="7" class="px-auto py-4 text-center align-middle">Tidak ada data</td>
+                <td colspan="5" class="px-auto py-4 text-center align-middle">Tidak ada data</td>
             </tr>
             @endforelse
             </tbody>
@@ -153,41 +163,26 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
-    // Fungsi Helper Vanilla JS untuk menutup modal (dipakai tombol X)
     function closeModalJS() {
         const modal = document.getElementById('confirmModal');
         modal.classList.add('hidden');
         modal.classList.remove('flex');
-
-        // Opsional: Dispatch event ke Livewire agar properti state bersih
-        // Livewire.dispatch('close-confirm-modal');
     }
 
     document.addEventListener('livewire:init', () => {
         const modal = document.getElementById('confirmModal');
 
-        // 1. Dengarkan event 'open-confirm-modal' dari PHP
         window.addEventListener('open-confirm-modal', (event) => {
-            // Hapus class 'hidden', tambah class 'flex' agar muncul ditengah
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         });
 
-        // 2. Dengarkan event 'close-confirm-modal' dari PHP
         window.addEventListener('close-confirm-modal', (event) => {
-            // Balikkan ke kondisi semula (sembunyi)
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         });
     });
 </script>
-
-
-
-
-
-

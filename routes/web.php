@@ -50,11 +50,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
 });
 
+
 Route::middleware(['auth', 'verified'])->group(function () {
+    // 1. Daftar Pengguna
     Route::get('/daftar-pengguna', [UserController::class, 'index'])->name('pengguna.index');
-});
-Route::middleware(['auth', 'verified'])->group(function () {
+
+    // 2. Tambah Pengguna (Form & Aksi Simpan)
     Route::get('/tambah-pengguna', [UserController::class, 'tambah'])->name('pengguna.tambah');
+    Route::post('/tambah-pengguna', [UserController::class, 'store'])->name('pengguna.store');
+
+    // 3. Import CSV Pengguna (Form & Aksi Proses)
+    Route::get('/import-pengguna', [UserController::class, 'importForm'])->name('pengguna.import');
+    Route::post('/import-pengguna', [UserController::class, 'importStore'])->name('pengguna.import.store');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

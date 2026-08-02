@@ -44,7 +44,7 @@ class PerangkatDesa extends Model
             'PD03' => 'Kaur Umum dan Perencanaan',
             'PD04' => 'Kaur Keuangan',
             'PD05' => 'Kaur Perencanaan',
-            'PD45' => 'Kaur Keuangan dan Perencanaan',
+            'PD45' => 'Kaur Keuangan dan Perencanaan', //ini nanti kaur umum saja
             'PD06' => 'Kasi Pemerintahan',
             'PD07' => 'Kasi Kesejahteraan',
             'PD08' => 'Kasi Pelayanan',
