@@ -21,4 +21,11 @@ class VerifikasiAbsensi extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+// app/Models/VerifikasiAbsensi.php
+
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class, 'kode_desa', 'kode_desa');
+    }
 }

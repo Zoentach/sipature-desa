@@ -8,13 +8,47 @@ use App\Models\VerifikasiAbsensi;
 class VerifikasiAbsensiController extends Controller
 {
     /**
-     * Simpan data verifikasi absensi
+     * Tampilkan halaman index dashboard (Memanggil Livewire)
+     */
+    public function index()
+    {
+        return view('admin.absensi.device');
+    }
+
+    /**
+     * Tampilkan halaman form edit
+     */
+    public function edit($id)
+    {
+        $verifikasi = VerifikasiAbsensi::findOrFail($id);
+        return view('admin.absensi.device_edit', compact('verifikasi'));
+    }
+
+    /**
+     * Proses update data dari form edit
+     */
+    public function update(Request $request, $id)
+    {
+        $verifikasi = VerifikasiAbsensi::findOrFail($id);
+
+        $validated = $request->validate([
+            'mac_address' => 'nullable|string|max:50',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+        ]);
+
+        $verifikasi->update($validated);
+
+        return redirect()->route('absensi.device')->with('message', 'Data device absensi berhasil diperbarui.');
+    }
+
+    /**
+     * Simpan data verifikasi absensi (API / Mobile)
      */
     public function store(Request $request)
     {
-        $user = $request->user(); // user login dari Sanctum
+        $user = $request->user();
 
-        // Validasi input
         $validated = $request->validate([
             'kode_kecamatan' => 'required|string|max:20',
             'kode_desa' => 'required|string|max:20',
@@ -23,7 +57,6 @@ class VerifikasiAbsensiController extends Controller
             'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
-        // Cek apakah sudah ada verifikasi untuk user ini
         $existing = VerifikasiAbsensi::where('user_id', $user->id)->first();
 
         if ($existing) {
@@ -31,10 +64,9 @@ class VerifikasiAbsensiController extends Controller
                 'status' => 'failed',
                 'message' => 'Data verifikasi sudah ada untuk user ini.',
                 'data' => $existing
-            ], 409); // 409 Conflict
+            ], 409);
         }
 
-        // Buat baru jika belum ada
         $verifikasi = VerifikasiAbsensi::create([
             'user_id' => $user->id,
             'kode_kecamatan' => $validated['kode_kecamatan'],
@@ -51,13 +83,14 @@ class VerifikasiAbsensiController extends Controller
         ], 201);
     }
 
-
+    /**
+     * Ambil data (API / Mobile)
+     */
     public function getVerifikasiAbsensi(Request $request)
     {
-        $user = $request->user(); // user yang sedang login
+        $user = $request->user();
 
-        // Ambil data verifikasi milik user login
-        $verifikasi = \App\Models\VerifikasiAbsensi::where('user_id', $user->id)->first();
+        $verifikasi = VerifikasiAbsensi::where('user_id', $user->id)->first();
 
         if (!$verifikasi) {
             return response()->json([
@@ -71,5 +104,4 @@ class VerifikasiAbsensiController extends Controller
             'data' => $verifikasi
         ], 200);
     }
-
 }

@@ -6,6 +6,7 @@ use App\Models\PerangkatDesa;
 use App\Models\Absensi;
 use App\Models\VerifikasiAbsensi;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
@@ -14,6 +15,58 @@ class AbsensiController extends Controller
     public function index()
     {
         return view('admin.absensi.index');
+    }
+
+    public function ringkasan(Request $request)
+    {
+        // 1. Filter Bulan & Tahun
+        $bulan = $request->input('bulan', Carbon::now()->month);
+        $tahun = $request->input('tahun', Carbon::now()->year);
+
+        // 2. Data Statistik Struktur (Hanya Hitungan)
+        // Ganti bagian $counts menjadi seperti ini:
+        $counts = [
+            'kades' => PerangkatDesa::where('status_keaktifan', 'Aktif')->where('kode_jabatan', 'PD01')->count(),
+            'sekdes' => PerangkatDesa::where('status_keaktifan', 'Aktif')->where('kode_jabatan', 'PD02')->count(),
+
+            // Kaur dipecah 2 sesuai gambar
+            'kaur_umum' => PerangkatDesa::where('status_keaktifan', 'Aktif')->whereIn('kode_jabatan', ['PD03', 'PD05', 'PD45'])->count(),
+            'kaur_keuangan' => PerangkatDesa::where('status_keaktifan', 'Aktif')->where('kode_jabatan', 'PD04')->count(),
+
+            // Kasi dipecah 2 sesuai gambar
+            'kasi_pemerintahan' => PerangkatDesa::where('status_keaktifan', 'Aktif')->where('kode_jabatan', 'PD06')->count(),
+            'kasi_kesejahteraan' => PerangkatDesa::where('status_keaktifan', 'Aktif')->whereIn('kode_jabatan', ['PD07', 'PD08', 'PD78'])->count(),
+
+            'kadus' => PerangkatDesa::where('status_keaktifan', 'Aktif')->where('kode_jabatan', 'PD09')->count(),
+        ];
+
+        $totalSemuaAparatur = PerangkatDesa::where('status_keaktifan', 'Aktif')->count();
+
+        // 3. Data Statistik Kehadiran
+        $absensiBulan = Absensi::whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
+            ->get();
+
+        $totalAbsenRecords = $absensiBulan->count() ?: 1;
+
+        // 4. Hitung Persentase 6 Kategori
+        $kategori = [
+            'Hadir' => $absensiBulan->where('status_kehadiran', 'Hadir')->count(),
+            'Tugas Luar' => $absensiBulan->where('status_kehadiran', 'Tugas Luar')->count(),
+            'Absen' => $absensiBulan->whereIn('status_kehadiran', ['Alpha', 'Absen'])->count(),
+            'Izin' => $absensiBulan->where('status_kehadiran', 'Izin')->count(),
+            'Sakit' => $absensiBulan->where('status_kehadiran', 'Sakit')->count(),
+            'Cuti' => $absensiBulan->where('status_kehadiran', 'Cuti')->count(),
+        ];
+
+        $chartPercentages = [];
+        foreach ($kategori as $status => $val) {
+            $chartPercentages[$status] = round(($val / $totalAbsenRecords) * 100, 2);
+        }
+
+        return view('admin.absensi.ringkasan', compact(
+            'counts', 'totalSemuaAparatur', 'chartPercentages', 'bulan', 'tahun'
+        ));
     }
 
     public function izin()

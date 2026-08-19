@@ -102,6 +102,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // URL: /v1/perangkat-desa, /v1/dashboard
     // =======================================================
     Route::prefix('v1')->group(function () {
+        
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
         Route::get('/desa', [DesaController::class, 'index']);
@@ -126,7 +127,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('pegawai', PegawaiApiController::class)
             ->except(['show'])
             ->names('api.v1.pegawai');
-        
+
     });
 
 });

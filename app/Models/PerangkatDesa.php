@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class PerangkatDesa extends Model
 {
     use HasFactory;
@@ -59,7 +60,7 @@ class PerangkatDesa extends Model
     }
 
 
-// relasi di model PerangkatDesa:
+    // relasi di model PerangkatDesa:
     public function absensi()
     {
         #return $this->hasMany(Absensi::class, 'perangkat_id');
