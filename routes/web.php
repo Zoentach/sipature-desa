@@ -25,16 +25,20 @@ Route::get('/', function () {
 })->name('beranda');
 
 Route::get('/tentang-kami', function () {
-    return view('guest.tentang.tentang');
+    return view('guest.tentang.index');
 })->name('tentang');
 
 // -- Desa --
 Route::prefix('desa')->name('desa.')->group(function () {
     Route::get('/', [DesaController::class, 'getAll'])->name('index');
     Route::get('/search', [DesaController::class, 'search'])->name('search');
-    Route::get('/{id}', [DesaController::class, 'detail'])->name('detail');
+
+    // PERBAIKAN: Ubah {id} menjadi {desa} agar sinkron dengan controller.
+    // Tambahkan where() agar rute ini HANYA aktif jika parameter berupa angka (ID).
+    Route::get('/{desa}', [DesaController::class, 'detail'])
+        ->name('detail')
+        ->where('desa', '[0-9]+');
 });
-// (Route '/daftar-desa' ditiadakan karena fungsinya sama persis dengan '/desa')
 
 // -- Perangkat Desa --
 Route::prefix('perangkat')->name('perangkat.')->group(function () {
@@ -57,6 +61,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // -- Dashboard --
     Route::view('dashboard', 'admin.dashboard.index')->name('dashboard');
+
+    Route::prefix('desa')->name('desa.')->group(function () {
+        Route::get('/daftar', [DesaController::class, 'index'])->name('admin.index');
+        Route::get('/edit', [DesaController::class, 'update'])->name('admin.edit');
+    });
 
     // -- Pengguna --
     Route::prefix('pengguna')->name('pengguna.')->group(function () {

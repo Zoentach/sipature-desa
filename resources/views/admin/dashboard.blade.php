@@ -159,8 +159,9 @@
                     </svg>
                 </button>
                 <ul id="pemdes" class="hidden py-1 space-y-1">
-                    <li><a href="#"
-                           class="flex items-center w-full p-2 text-sm text-emerald-200 transition duration-75 rounded-lg pl-11 hover:bg-emerald-800 hover:text-white">BPD</a>
+                    <li><a href="{{ route('desa.admin.index') }}"
+                           class="flex items-center w-full p-2 text-sm text-emerald-200 transition duration-75 rounded-lg pl-11 hover:bg-emerald-800 hover:text-white">Daftar
+                            Desa</a>
                     </li>
                     <li><a href="#"
                            class="flex items-center w-full p-2 text-sm text-emerald-200 transition duration-75 rounded-lg pl-11 hover:bg-emerald-800 hover:text-white">Pemuka

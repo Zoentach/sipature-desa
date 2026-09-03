@@ -9,6 +9,17 @@ use App\Models\PerangkatDesa;
 
 class DesaController extends Controller
 {
+
+    public function index()
+    {
+        return view('admin.desa.index');
+    }
+
+    public function update()
+    {
+
+    }
+
     /**
      * Tampilkan semua desa (guest)
      */

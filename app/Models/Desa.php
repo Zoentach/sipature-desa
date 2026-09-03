@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations;
 
 
 class Desa extends Model
@@ -69,6 +68,11 @@ class Desa extends Model
     public function riwayatEvaluasi()
     {
         return $this->hasMany(HasilEvaluasi::class, 'desa_id');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kode_kecamatan', 'kode_kecamatan');
     }
 
 }
