@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class AbsensiController extends Controller
 {
-    private const absensiDistance = 1000000;
+    private const absensiDistance = 1000000000000;
 
     public function index()
     {
@@ -127,6 +127,8 @@ class AbsensiController extends Controller
         }
 
         //(Opsional) Validasi lokasi dalam radius 10 meter
+        //Menonaktifkan lokasi
+        /*
         if ($verifikasiAbsensi->latitude &&
             $verifikasiAbsensi->longitude &&
             $request->latitude &&
@@ -145,6 +147,7 @@ class AbsensiController extends Controller
                 ], 403);
             }
         }
+        */
 
         // Upload file jika ada
         if ($request->hasFile('gambar_pagi')) {
@@ -238,11 +241,13 @@ class AbsensiController extends Controller
                 $request->longitude ?? 0
             );
 
-            if ($distance > self::absensiDistance) {
-                return response()->json([
-                    'message' => 'Anda berada di luar radius 10 meter dari lokasi verifikasi.'
-                ], 403);
-            }
+            //Menonaktifkan lokasi
+
+            //       if ($distance > self::absensiDistance) {
+            //          return response()->json([
+            //             'message' => 'Anda berada di luar radius 10 meter dari lokasi verifikasi.'
+            //          ], 403);
+            //     }
         }
 
         // Simpan lampiran ke storage
